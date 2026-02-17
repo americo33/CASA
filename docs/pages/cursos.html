@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos | Reconecta Con Tu Vida</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .cursos-nav {
+            background: rgba(27, 94, 59, 0.97);
+            padding: 10px 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Courses Grid */
+        .cursos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .curso-card {
+            background: var(--blanco);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .curso-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .curso-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .curso-image .curso-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--blanco);
+            font-size: 0.9rem;
+        }
+
+        .curso-placeholder i {
+            font-size: 3rem;
+        }
+
+        .curso-card:nth-child(6n+1) .curso-placeholder { background: linear-gradient(135deg, #1B5E3B, #2E7D52); }
+        .curso-card:nth-child(6n+2) .curso-placeholder { background: linear-gradient(135deg, #AD1457, #D81B60); }
+        .curso-card:nth-child(6n+3) .curso-placeholder { background: linear-gradient(135deg, #C5922A, #E6A817); }
+        .curso-card:nth-child(6n+4) .curso-placeholder { background: linear-gradient(135deg, #5C6BC0, #3949AB); }
+        .curso-card:nth-child(6n+5) .curso-placeholder { background: linear-gradient(135deg, #00897B, #00695C); }
+        .curso-card:nth-child(6n+6) .curso-placeholder { background: linear-gradient(135deg, #BF360C, #E64A19); }
+
+        .curso-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: var(--dorado);
+            color: var(--blanco);
+        }
+
+        .curso-level {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.5);
+            color: var(--blanco);
+            backdrop-filter: blur(5px);
+        }
+
+        .curso-body {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .curso-category {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dorado);
+            margin-bottom: 8px;
+        }
+
+        .curso-body h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--verde-profundo);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .curso-body p {
+            font-size: 0.95rem;
+            color: var(--gris-oscuro);
+            line-height: 1.6;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .curso-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--gris-medio);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .curso-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .curso-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid #EEE;
+        }
+
+        .curso-price {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--verde-profundo);
+        }
+
+        .curso-price-old {
+            font-size: 0.95rem;
+            color: var(--gris-medio);
+            text-decoration: line-through;
+            font-weight: 400;
+            margin-right: 8px;
+        }
+
+        .curso-buy-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--verde-profundo), var(--verde-medio));
+            color: var(--blanco);
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-body);
+        }
+
+        .curso-buy-btn:hover {
+            background: linear-gradient(135deg, var(--verde-medio), var(--verde-claro));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(27,94,59,0.3);
+        }
+
+        /* ========== PAYMENT SECTION ========== */
+        .pago-section {
+            background: var(--blanco);
+        }
+
+        .pago-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .pago-form-container {
+            background: var(--gris-claro);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .pago-form-container h3 {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            color: var(--verde-profundo);
+            margin-bottom: 5px;
+        }
+
+        .pago-form-container > p {
+            color: var(--gris-medio);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .pago-methods {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .pago-method {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            background: var(--blanco);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gris-oscuro);
+        }
+
+        .pago-method i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .pago-method:hover,
+        .pago-method.active {
+            border-color: var(--verde-profundo);
+            background: var(--verde-suave);
+            color: var(--verde-profundo);
+        }
+
+        .pago-field {
+            margin-bottom: 18px;
+        }
+
+        .pago-field label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--negro);
+            margin-bottom: 6px;
+        }
+
+        .pago-field input,
+        .pago-field select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            background: var(--blanco);
+            color: var(--gris-oscuro);
+        }
+
+        .pago-field input:focus,
+        .pago-field select:focus {
+            border-color: var(--verde-medio);
+            box-shadow: 0 0 0 3px rgba(46,125,82,0.1);
+        }
+
+        .pago-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .pago-secure {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--gris-medio);
+            margin-bottom: 20px;
+        }
+
+        .pago-secure i {
+            color: var(--verde-claro);
+        }
+
+        .pago-submit {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+            color: var(--verde-profundo);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .pago-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(197,146,42,0.4);
+        }
+
+        /* Order Summary */
+        .pago-resumen {
+            background: var(--verde-profundo);
+            border-radius: 20px;
+            padding: 35px;
+            color: var(--blanco);
+            position: sticky;
+            top: 100px;
+        }
+
+        .pago-resumen h3 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--dorado-claro);
+        }
+
+        .resumen-items {
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .resumen-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-size: 0.95rem;
+        }
+
+        .resumen-item-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resumen-item-name i {
+            color: var(--dorado-claro);
+        }
+
+        .resumen-item .remove-item {
+            color: var(--rosa-claro);
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            background: none;
+            border: none;
+            padding: 2px 6px;
+        }
+
+        .resumen-item .remove-item:hover {
+            color: var(--rosa-medio);
+        }
+
+        .resumen-empty {
+            text-align: center;
+            padding: 30px 0;
+            opacity: 0.6;
+        }
+
+        .resumen-empty i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .resumen-totals {
+            margin-top: 10px;
+        }
+
+        .resumen-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .resumen-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0 0;
+            margin-top: 10px;
+            border-top: 2px solid var(--dorado);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dorado-claro);
+        }
+
+        .pago-badges {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pago-badges span {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Payment Success */
+        .pago-success {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .pago-success.active {
+            display: block;
+        }
+
+        .pago-success i {
+            font-size: 5rem;
+            color: var(--verde-claro);
+            margin-bottom: 20px;
+        }
+
+        .pago-success h2 {
+            font-family: var(--font-heading);
+            color: var(--verde-profundo);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .pago-success p {
+            color: var(--gris-medio);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        /* Stripe / PayPal info panels */
+        .pago-panel {
+            display: none;
+        }
+
+        .pago-panel.active {
+            display: block;
+        }
+
+        .paypal-panel {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .paypal-panel i {
+            font-size: 3rem;
+            color: #003087;
+            margin-bottom: 15px;
+        }
+
+        .paypal-panel p {
+            color: var(--gris-medio);
+            margin-bottom: 20px;
+        }
+
+        .paypal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 25px;
+            background: #FFC439;
+            color: #003087;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .paypal-btn:hover {
+            background: #F0B72A;
+            transform: translateY(-2px);
+        }
+
+        .transfer-panel {
+            padding: 10px 0;
+        }
+
+        .transfer-panel .bank-info {
+            background: var(--blanco);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--verde-profundo);
+        }
+
+        .transfer-panel .bank-info p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+            color: var(--gris-oscuro);
+        }
+
+        .transfer-panel .bank-info strong {
+            color: var(--verde-profundo);
+        }
+
+        @media (max-width: 1024px) {
+            .cursos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .pago-grid {
+                grid-template-columns: 1fr;
+            }
+            .pago-resumen {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cursos-grid {
+                grid-template-columns: 1fr;
+            }
+            .pago-methods {
+                flex-direction: column;
+            }
+            .pago-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar cursos-nav" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <span class="logo-icon">&#10053;</span>
+                Reconecta con tu Vida
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html#sobre-mi" class="nav-link">Sobre Mí</a></li>
+                <li><a href="../index.html#servicios" class="nav-link">Servicios</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="cursos.html" class="nav-link" style="color: var(--dorado-claro);">Cursos</a></li>
+                <li><a href="../index.html#contacto" class="nav-link">Contáctenos</a></li>
+                <li><a href="registro.html" class="nav-link nav-btn">Iniciar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <h1>Cursos & Programas</h1>
+        <p>Transforma tu vida con nuestros programas especializados</p>
+    </section>
+
+    <!-- Courses -->
+    <section class="section" style="background: var(--crema);">
+        <div class="container">
+            <span class="section-tag center">Aprende a tu Ritmo</span>
+            <h2 class="section-title center">Nuestros Cursos</h2>
+            <p class="section-description center">
+                Cada curso está diseñado con amor y dedicación para guiarte paso a paso en tu proceso de transformación.
+            </p>
+
+            <div class="cursos-grid">
+
+                <!-- Curso 1 -->
+                <div class="curso-card">
+                    <div class="curso-image">
+                        <div class="curso-placeholder">
+                            <i class="fas fa-heart"></i>
+                            <span>Coaching</span>
+                        </div>
+                        <span class="curso-badge">Nuevo</span>
+                        <span class="curso-level">Todos los niveles</span>
+                    </div>
+                    <div class="curso-body">
+                        <span class="curso-category">Coaching</span>
+                        <h3>Descubre tu Propósito de Vida</h3>
+                        <p>Un programa intensivo de 6 semanas donde trabajarás con herramientas de coaching para encontrar claridad y dirección en tu vida.</p>
+                        <div class="curso-meta">
+                            <span><i class="fas fa-clock"></i> 6 semanas</span>
+                            <span><i class="fas fa-video"></i> 12 módulos</span>
+                            <span><i class="fas fa-users"></i> 45 inscritos</span>
+                        </div>
+                        <div class="curso-footer">
+                            <div>
+                                <span class="curso-price-old">$350</span>
+                                <span class="curso-price">$249 USD</span>
+                            </div>
+                            <button class="curso-buy-btn" data-name="Descubre tu Propósito de Vida" data-price="249">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curso 2 -->
+                <div class="curso-card">
+                    <div class="curso-image">
+                        <div class="curso-placeholder">
+                            <i class="fas fa-spa"></i>
+                            <span>Yoga</span>
+                        </div>
+                        <span class="curso-badge">Popular</span>
+                        <span class="curso-level">Principiante</span>
+                    </div>
+                    <div class="curso-body">
+                        <span class="curso-category">Yoga</span>
+                        <h3>Yoga para Principiantes: De Cero a Om</h3>
+                        <p>Aprende los fundamentos del yoga desde casa. Incluye posturas básicas, técnicas de respiración y meditación guiada.</p>
+                        <div class="curso-meta">
+                            <span><i class="fas fa-clock"></i> 4 semanas</span>
+                            <span><i class="fas fa-video"></i> 20 clases</span>
+                            <span><i class="fas fa-users"></i> 120 inscritos</span>
+                        </div>
+                        <div class="curso-footer">
+                            <div>
+                                <span class="curso-price-old">$180</span>
+                                <span class="curso-price">$129 USD</span>
+                            </div>
+                            <button class="curso-buy-btn" data-name="Yoga para Principiantes" data-price="129">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curso 3 -->
+                <div class="curso-card">
+                    <div class="curso-image">
+                        <div class="curso-placeholder">
+                            <i class="fas fa-brain"></i>
+                            <span>Mindfulness</span>
+                        </div>
+                        <span class="curso-level">Todos los niveles</span>
+                    </div>
+                    <div class="curso-body">
+                        <span class="curso-category">Mindfulness</span>
+                        <h3>Programa MBSR: Reducción del Estrés</h3>
+                        <p>El programa clásico de Mindfulness Based Stress Reduction de 8 semanas, adaptado para el mundo hispano.</p>
+                        <div class="curso-meta">
+                            <span><i class="fas fa-clock"></i> 8 semanas</span>
+                            <span><i class="fas fa-video"></i> 16 sesiones</span>
+                            <span><i class="fas fa-users"></i> 78 inscritos</span>
+                        </div>
+                        <div class="curso-footer">
+                            <div>
+                                <span class="curso-price">$199 USD</span>
+                            </div>
+                            <button class="curso-buy-btn" data-name="Programa MBSR" data-price="199">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curso 4 -->
+                <div class="curso-card">
+                    <div class="curso-image">
+                        <div class="curso-placeholder">
+                            <i class="fas fa-sun"></i>
+                            <span>Energías</span>
+                        </div>
+                        <span class="curso-badge">Certificado</span>
+                        <span class="curso-level">Intermedio</span>
+                    </div>
+                    <div class="curso-body">
+                        <span class="curso-category">Sanación Energética</span>
+                        <h3>Reiki Nivel I: Iniciación y Práctica</h3>
+                        <p>Curso completo de Reiki Nivel I con iniciación a distancia. Aprende a canalizar energía para tu autocuración.</p>
+                        <div class="curso-meta">
+                            <span><i class="fas fa-clock"></i> 3 semanas</span>
+                            <span><i class="fas fa-video"></i> 8 módulos</span>
+                            <span><i class="fas fa-certificate"></i> Certificado</span>
+                        </div>
+                        <div class="curso-footer">
+                            <div>
+                                <span class="curso-price-old">$300</span>
+                                <span class="curso-price">$220 USD</span>
+                            </div>
+                            <button class="curso-buy-btn" data-name="Reiki Nivel I" data-price="220">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curso 5 -->
+                <div class="curso-card">
+                    <div class="curso-image">
+                        <div class="curso-placeholder">
+                            <i class="fas fa-om"></i>
+                            <span>Yoga Avanzado</span>
+                        </div>
+                        <span class="curso-level">Avanzado</span>
+                    </div>
+                    <div class="curso-body">
+                        <span class="curso-category">Yoga</span>
+                        <h3>Vinyasa Flow: Secuencias Creativas</h3>
+                        <p>Lleva tu práctica al siguiente nivel. Aprende a crear secuencias fluidas y a profundizar en posturas avanzadas.</p>
+                        <div class="curso-meta">
+                            <span><i class="fas fa-clock"></i> 5 semanas</span>
+                            <span><i class="fas fa-video"></i> 15 clases</span>
+                            <span><i class="fas fa-users"></i> 32 inscritos</span>
+                        </div>
+                        <div class="curso-footer">
+                            <div>
+                                <span class="curso-price">$169 USD</span>
+                            </div>
+                            <button class="curso-buy-btn" data-name="Vinyasa Flow Avanzado" data-price="169">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curso 6 -->
+                <div class="curso-card">
+                    <div class="curso-image">
+                        <div class="curso-placeholder">
+                            <i class="fas fa-peace"></i>
+                            <span>Bienestar Integral</span>
+                        </div>
+                        <span class="curso-badge">Premium</span>
+                        <span class="curso-level">Todos los niveles</span>
+                    </div>
+                    <div class="curso-body">
+                        <span class="curso-category">Bienestar Integral</span>
+                        <h3>Reconecta 360: Transformación Total</h3>
+                        <p>El programa más completo: combina coaching, yoga, mindfulness y sanación energética en un viaje de 12 semanas.</p>
+                        <div class="curso-meta">
+                            <span><i class="fas fa-clock"></i> 12 semanas</span>
+                            <span><i class="fas fa-video"></i> 36 módulos</span>
+                            <span><i class="fas fa-certificate"></i> Certificado</span>
+                        </div>
+                        <div class="curso-footer">
+                            <div>
+                                <span class="curso-price-old">$600</span>
+                                <span class="curso-price">$449 USD</span>
+                            </div>
+                            <button class="curso-buy-btn" data-name="Reconecta 360: Transformación Total" data-price="449">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section class="section pago-section" id="pagar">
+        <div class="container">
+            <span class="section-tag center">Pago Seguro</span>
+            <h2 class="section-title center">Finalizar Compra</h2>
+            <p class="section-description center">
+                Completa tu compra de forma segura. Aceptamos múltiples métodos de pago.
+            </p>
+
+            <div class="pago-grid">
+                <!-- Payment Form -->
+                <div class="pago-form-container" id="pagoFormContainer">
+                    <h3>Datos de Pago</h3>
+                    <p>Elige tu método de pago preferido</p>
+
+                    <!-- Payment Methods -->
+                    <div class="pago-methods">
+                        <button class="pago-method active" data-method="tarjeta">
+                            <i class="fas fa-credit-card"></i>
+                            Tarjeta
+                        </button>
+                        <button class="pago-method" data-method="paypal">
+                            <i class="fab fa-paypal"></i>
+                            PayPal
+                        </button>
+                        <button class="pago-method" data-method="transferencia">
+                            <i class="fas fa-university"></i>
+                            Transferencia
+                        </button>
+                    </div>
+
+                    <!-- Credit Card Panel -->
+                    <div class="pago-panel active" id="panelTarjeta">
+                        <form id="pagoForm">
+                            <div class="pago-field">
+                                <label>Nombre en la Tarjeta</label>
+                                <input type="text" placeholder="Como aparece en la tarjeta" required>
+                            </div>
+                            <div class="pago-field">
+                                <label>Número de Tarjeta</label>
+                                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            </div>
+                            <div class="pago-row">
+                                <div class="pago-field">
+                                    <label>Fecha de Expiración</label>
+                                    <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5" required>
+                                </div>
+                                <div class="pago-field">
+                                    <label>CVV</label>
+                                    <input type="text" id="cardCVV" placeholder="123" maxlength="4" required>
+                                </div>
+                            </div>
+                            <div class="pago-field">
+                                <label>Correo Electrónico</label>
+                                <input type="email" placeholder="Para enviar el recibo" required>
+                            </div>
+                            <div class="pago-secure">
+                                <i class="fas fa-lock"></i>
+                                <span>Tu información de pago está protegida con encriptación SSL de 256 bits</span>
+                            </div>
+                            <button type="submit" class="pago-submit" id="pagoSubmitBtn">
+                                <i class="fas fa-lock"></i>
+                                <span>Pagar $0.00 USD</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- PayPal Panel -->
+                    <div class="pago-panel" id="panelPaypal">
+                        <div class="paypal-panel">
+                            <i class="fab fa-paypal"></i>
+                            <p>Serás redirigido a PayPal para completar tu pago de forma segura.</p>
+                            <button class="paypal-btn" id="paypalBtn">
+                                <i class="fab fa-paypal"></i> Pagar con PayPal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Panel -->
+                    <div class="pago-panel" id="panelTransferencia">
+                        <div class="transfer-panel">
+                            <p style="margin-bottom: 15px; color: var(--gris-oscuro);">Realiza una transferencia bancaria con los siguientes datos:</p>
+                            <div class="bank-info">
+                                <p><strong>Banco:</strong> BROU - Banco República</p>
+                                <p><strong>Titular:</strong> Reconecta con tu Vida</p>
+                                <p><strong>Cuenta:</strong> 001-0123456-00001</p>
+                                <p><strong>Moneda:</strong> Dólares (USD)</p>
+                            </div>
+                            <div class="bank-info">
+                                <p><strong>Banco:</strong> Itaú Uruguay</p>
+                                <p><strong>Titular:</strong> Reconecta con tu Vida</p>
+                                <p><strong>Cuenta:</strong> 12345678</p>
+                                <p><strong>Moneda:</strong> Dólares (USD)</p>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--gris-medio); margin-top: 15px;">
+                                <i class="fas fa-info-circle"></i> Una vez realizada la transferencia, envíanos el comprobante a
+                                <strong>pagos@reconectacontuvida.com</strong> para activar tu acceso.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Payment Success (hidden by default) -->
+                    <div class="pago-success" id="pagoSuccess">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>Pago Exitoso</h2>
+                        <p>Tu compra ha sido procesada correctamente. Revisa tu correo para acceder a tu curso.</p>
+                        <a href="../index.html" class="btn btn-primary">Volver al Inicio</a>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="pago-resumen">
+                    <h3><i class="fas fa-shopping-cart"></i> Resumen del Pedido</h3>
+
+                    <div class="resumen-items" id="resumenItems">
+                        <div class="resumen-empty">
+                            <i class="fas fa-shopping-bag"></i>
+                            <p>Tu carrito está vacío.<br>Agrega un curso para comenzar.</p>
+                        </div>
+                    </div>
+
+                    <div class="resumen-totals" id="resumenTotals" style="display: none;">
+                        <div class="resumen-line">
+                            <span>Subtotal</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="resumen-line">
+                            <span>Descuento</span>
+                            <span id="descuento">-$0.00</span>
+                        </div>
+                        <div class="resumen-total">
+                            <span>Total</span>
+                            <span id="total">$0.00 USD</span>
+                        </div>
+                    </div>
+
+                    <div class="pago-badges">
+                        <span><i class="fas fa-shield-alt"></i> Pago Seguro</span>
+                        <span><i class="fas fa-undo"></i> Garantía 30 días</span>
+                        <span><i class="fas fa-lock"></i> SSL 256-bit</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border: none;">
+                <p>&copy; 2026 Reconecta con tu Vida. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ---- Mobile Nav ----
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+        }
+
+        // ---- Shopping Cart ----
+        let cart = [];
+
+        function updateCart() {
+            const resumenItems = document.getElementById('resumenItems');
+            const resumenTotals = document.getElementById('resumenTotals');
+            const submitBtn = document.getElementById('pagoSubmitBtn');
+
+            if (cart.length === 0) {
+                resumenItems.innerHTML = `
+                    <div class="resumen-empty">
+                        <i class="fas fa-shopping-bag"></i>
+                        <p>Tu carrito está vacío.<br>Agrega un curso para comenzar.</p>
+                    </div>
+                `;
+                resumenTotals.style.display = 'none';
+                if (submitBtn) {
+                    submitBtn.querySelector('span').textContent = 'Pagar $0.00 USD';
+                }
+                return;
+            }
+
+            let html = '';
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                subtotal += item.price;
+                html += `
+                    <div class="resumen-item">
+                        <div class="resumen-item-name">
+                            <i class="fas fa-check-circle"></i>
+                            <span>${item.name}</span>
+                        </div>
+                        <div>
+                            $${item.price.toFixed(2)}
+                            <button class="remove-item" data-index="${index}" title="Eliminar">&times;</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resumenItems.innerHTML = html;
+            resumenTotals.style.display = 'block';
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('descuento').textContent = `-$0.00`;
+            document.getElementById('total').textContent = `$${subtotal.toFixed(2)} USD`;
+
+            if (submitBtn) {
+                submitBtn.querySelector('span').textContent = `Pagar $${subtotal.toFixed(2)} USD`;
+            }
+
+            // Attach remove events
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    cart.splice(parseInt(btn.dataset.index), 1);
+                    updateCart();
+                });
+            });
+        }
+
+        // Add to cart buttons
+        document.querySelectorAll('.curso-buy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const name = btn.dataset.name;
+                const price = parseFloat(btn.dataset.price);
+
+                // Check if already in cart
+                if (cart.find(item => item.name === name)) {
+                    alert('Este curso ya está en tu carrito');
+                    return;
+                }
+
+                cart.push({ name, price });
+                updateCart();
+
+                // Scroll to payment
+                document.getElementById('pagar').scrollIntoView({ behavior: 'smooth' });
+
+                // Visual feedback
+                btn.textContent = 'Agregado';
+                btn.style.background = 'var(--dorado)';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-cart-plus"></i> Comprar';
+                    btn.style.background = '';
+                }, 2000);
+            });
+        });
+
+        // ---- Payment Methods Toggle ----
+        const methodBtns = document.querySelectorAll('.pago-method');
+        const panels = document.querySelectorAll('.pago-panel');
+
+        methodBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                methodBtns.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+
+                btn.classList.add('active');
+                const method = btn.dataset.method;
+                document.getElementById(`panel${method.charAt(0).toUpperCase() + method.slice(1)}`).classList.add('active');
+            });
+        });
+
+        // ---- Card Number Formatting ----
+        const cardNumber = document.getElementById('cardNumber');
+        if (cardNumber) {
+            cardNumber.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/\D/g, '');
+                val = val.replace(/(\d{4})(?=\d)/g, '$1 ');
+                e.target.value = val;
+            });
+        }
+
+        // ---- Expiry Formatting ----
+        const cardExpiry = document.getElementById('cardExpiry');
+        if (cardExpiry) {
+            cardExpiry.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/\D/g, '');
+                if (val.length >= 2) {
+                    val = val.substring(0, 2) + '/' + val.substring(2);
+                }
+                e.target.value = val;
+            });
+        }
+
+        // ---- CVV ----
+        const cardCVV = document.getElementById('cardCVV');
+        if (cardCVV) {
+            cardCVV.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+        }
+
+        // ---- Payment Form Submit ----
+        const pagoForm = document.getElementById('pagoForm');
+        if (pagoForm) {
+            pagoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                if (cart.length === 0) {
+                    alert('Tu carrito está vacío. Agrega un curso primero.');
+                    return;
+                }
+
+                // Simulate payment processing
+                const submitBtn = document.getElementById('pagoSubmitBtn');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Procesando...</span>';
+                submitBtn.disabled = true;
+
+                setTimeout(() => {
+                    document.getElementById('pagoFormContainer').querySelector('h3').style.display = 'none';
+                    document.getElementById('pagoFormContainer').querySelector('p').style.display = 'none';
+                    document.querySelector('.pago-methods').style.display = 'none';
+                    panels.forEach(p => p.style.display = 'none');
+                    document.getElementById('pagoSuccess').classList.add('active');
+                    document.getElementById('pagoSuccess').style.display = 'block';
+
+                    // Save order to localStorage
+                    const orders = JSON.parse(localStorage.getItem('rctv_orders') || '[]');
+                    orders.push({
+                        items: cart,
+                        total: cart.reduce((sum, item) => sum + item.price, 0),
+                        date: new Date().toISOString(),
+                        method: 'tarjeta'
+                    });
+                    localStorage.setItem('rctv_orders', JSON.stringify(orders));
+                    cart = [];
+                    updateCart();
+                }, 2500);
+            });
+        }
+
+        // ---- PayPal Button ----
+        const paypalBtn = document.getElementById('paypalBtn');
+        if (paypalBtn) {
+            paypalBtn.addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Tu carrito está vacío. Agrega un curso primero.');
+                    return;
+                }
+
+                paypalBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirigiendo...';
+                setTimeout(() => {
+                    document.getElementById('pagoFormContainer').querySelector('h3').style.display = 'none';
+                    document.getElementById('pagoFormContainer').querySelector('p').style.display = 'none';
+                    document.querySelector('.pago-methods').style.display = 'none';
+                    panels.forEach(p => p.style.display = 'none');
+                    document.getElementById('pagoSuccess').classList.add('active');
+                    document.getElementById('pagoSuccess').style.display = 'block';
+                    cart = [];
+                    updateCart();
+                }, 2000);
+            });
+        }
+
+        // Initialize
+        updateCart();
+    </script>
+
+</body>
+</html>

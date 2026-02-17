@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Reconecta Con Tu Vida</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ---- Blog Specific Styles ---- */
+        .blog-nav {
+            background: rgba(27, 94, 59, 0.97);
+            padding: 10px 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .blog-categories {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .category-btn {
+            padding: 10px 24px;
+            border: 2px solid var(--verde-medio);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--verde-medio);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--verde-profundo);
+            color: var(--blanco);
+            border-color: var(--verde-profundo);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .blog-card {
+            background: var(--blanco);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .blog-card-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-card-image .blog-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--blanco);
+        }
+
+        .blog-card:nth-child(6n+1) .blog-placeholder { background: linear-gradient(135deg, var(--verde-profundo), var(--verde-medio)); }
+        .blog-card:nth-child(6n+2) .blog-placeholder { background: linear-gradient(135deg, var(--rosa-profundo), var(--rosa-medio)); }
+        .blog-card:nth-child(6n+3) .blog-placeholder { background: linear-gradient(135deg, var(--dorado), #E6A817); }
+        .blog-card:nth-child(6n+4) .blog-placeholder { background: linear-gradient(135deg, #5C6BC0, #3949AB); }
+        .blog-card:nth-child(6n+5) .blog-placeholder { background: linear-gradient(135deg, var(--terracota), #E64A19); }
+        .blog-card:nth-child(6n+6) .blog-placeholder { background: linear-gradient(135deg, #00897B, #00695C); }
+
+        .blog-card-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cat-coaching { background: var(--verde-profundo); color: var(--blanco); }
+        .cat-yoga { background: var(--rosa-profundo); color: var(--blanco); }
+        .cat-mindfulness { background: var(--dorado); color: var(--blanco); }
+        .cat-energias { background: #5C6BC0; color: var(--blanco); }
+        .cat-bienestar { background: var(--terracota); color: var(--blanco); }
+
+        .blog-card-body {
+            padding: 25px;
+        }
+
+        .blog-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--gris-medio);
+            margin-bottom: 12px;
+        }
+
+        .blog-card-meta i {
+            margin-right: 4px;
+        }
+
+        .blog-card-body h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--verde-profundo);
+            margin-bottom: 10px;
+            line-height: 1.4;
+            transition: var(--transition);
+        }
+
+        .blog-card:hover h3 {
+            color: var(--dorado);
+        }
+
+        .blog-card-body p {
+            font-size: 0.95rem;
+            color: var(--gris-oscuro);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .blog-read-more {
+            font-weight: 600;
+            color: var(--verde-profundo);
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .blog-read-more:hover {
+            color: var(--dorado);
+            gap: 10px;
+        }
+
+        .blog-featured {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--blanco);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 10px;
+        }
+
+        .blog-featured:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .blog-featured .blog-card-image {
+            height: 100%;
+            min-height: 350px;
+        }
+
+        .blog-featured .blog-card-body {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .blog-featured .blog-card-body h3 {
+            font-size: 1.8rem;
+        }
+
+        .featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--dorado-suave);
+            color: var(--dorado);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            width: fit-content;
+        }
+
+        /* Pagination */
+        .blog-pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 50px;
+        }
+
+        .page-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 2px solid #E0E0E0;
+            background: var(--blanco);
+            color: var(--gris-oscuro);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: var(--verde-profundo);
+            color: var(--blanco);
+            border-color: var(--verde-profundo);
+        }
+
+        @media (max-width: 1024px) {
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .blog-featured {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar blog-nav" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <span class="logo-icon">&#10053;</span>
+                Reconecta con tu Vida
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html#sobre-mi" class="nav-link">Sobre Mí</a></li>
+                <li><a href="../index.html#servicios" class="nav-link">Servicios</a></li>
+                <li><a href="blog.html" class="nav-link" style="color: var(--dorado-claro);">Blog</a></li>
+                <li><a href="cursos.html" class="nav-link">Cursos</a></li>
+                <li><a href="../index.html#contacto" class="nav-link">Contáctenos</a></li>
+                <li><a href="registro.html" class="nav-link nav-btn">Iniciar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <h1>Blog</h1>
+        <p>Reflexiones, consejos y herramientas para tu bienestar</p>
+    </section>
+
+    <!-- Blog Content -->
+    <section class="section" style="background: var(--crema);">
+        <div class="container">
+
+            <!-- Categories -->
+            <div class="blog-categories">
+                <button class="category-btn active" data-cat="todos">Todos</button>
+                <button class="category-btn" data-cat="coaching">Coaching</button>
+                <button class="category-btn" data-cat="yoga">Yoga</button>
+                <button class="category-btn" data-cat="mindfulness">Mindfulness</button>
+                <button class="category-btn" data-cat="energias">Energías</button>
+                <button class="category-btn" data-cat="bienestar">Bienestar</button>
+            </div>
+
+            <!-- Blog Grid -->
+            <div class="blog-grid">
+
+                <!-- Featured Post -->
+                <div class="blog-featured blog-card" data-category="mindfulness">
+                    <div class="blog-card-image">
+                        <div class="blog-placeholder" style="background: linear-gradient(135deg, var(--verde-profundo), var(--verde-medio));">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="featured-badge"><i class="fas fa-star"></i> Artículo Destacado</span>
+                        <div class="blog-card-meta">
+                            <span><i class="fas fa-calendar"></i> 10 Feb, 2026</span>
+                            <span><i class="fas fa-clock"></i> 8 min lectura</span>
+                        </div>
+                        <h3>Cómo el Mindfulness Puede Transformar tu Relación con el Estrés</h3>
+                        <p>Descubre las técnicas basadas en evidencia científica que pueden ayudarte a manejar el estrés diario y encontrar calma en medio del caos. Un recorrido por las prácticas más efectivas de atención plena.</p>
+                        <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Post 1 -->
+                <div class="blog-card" data-category="coaching">
+                    <div class="blog-card-image">
+                        <div class="blog-placeholder"><i class="fas fa-heart"></i></div>
+                        <span class="blog-card-category cat-coaching">Coaching</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            <span><i class="fas fa-calendar"></i> 5 Feb, 2026</span>
+                            <span><i class="fas fa-clock"></i> 5 min</span>
+                        </div>
+                        <h3>5 Preguntas Poderosas para tu Autoconocimiento</h3>
+                        <p>El coaching comienza con las preguntas correctas. Aquí te comparto cinco preguntas que pueden cambiar tu perspectiva.</p>
+                        <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="blog-card" data-category="yoga">
+                    <div class="blog-card-image">
+                        <div class="blog-placeholder"><i class="fas fa-spa"></i></div>
+                        <span class="blog-card-category cat-yoga">Yoga</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            <span><i class="fas fa-calendar"></i> 1 Feb, 2026</span>
+                            <span><i class="fas fa-clock"></i> 6 min</span>
+                        </div>
+                        <h3>Yoga para Principiantes: Tu Primera Semana de Práctica</h3>
+                        <p>Una guía amable y paso a paso para comenzar tu camino en el yoga sin sentirte abrumada.</p>
+                        <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="blog-card" data-category="energias">
+                    <div class="blog-card-image">
+                        <div class="blog-placeholder"><i class="fas fa-sun"></i></div>
+                        <span class="blog-card-category cat-energias">Energías</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            <span><i class="fas fa-calendar"></i> 28 Ene, 2026</span>
+                            <span><i class="fas fa-clock"></i> 7 min</span>
+                        </div>
+                        <h3>Los 7 Chakras: Guía Completa para Entender tu Energía</h3>
+                        <p>Aprende sobre los centros energéticos de tu cuerpo y cómo mantenerlos en equilibrio para una vida más armoniosa.</p>
+                        <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Post 4 -->
+                <div class="blog-card" data-category="mindfulness">
+                    <div class="blog-card-image">
+                        <div class="blog-placeholder"><i class="fas fa-leaf"></i></div>
+                        <span class="blog-card-category cat-mindfulness">Mindfulness</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            <span><i class="fas fa-calendar"></i> 22 Ene, 2026</span>
+                            <span><i class="fas fa-clock"></i> 4 min</span>
+                        </div>
+                        <h3>Meditación de 5 Minutos para Empezar el Día</h3>
+                        <p>Una práctica sencilla que puedes hacer cada mañana para comenzar tu día con claridad y calma interior.</p>
+                        <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Post 5 -->
+                <div class="blog-card" data-category="bienestar">
+                    <div class="blog-card-image">
+                        <div class="blog-placeholder"><i class="fas fa-seedling"></i></div>
+                        <span class="blog-card-category cat-bienestar">Bienestar</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            <span><i class="fas fa-calendar"></i> 15 Ene, 2026</span>
+                            <span><i class="fas fa-clock"></i> 6 min</span>
+                        </div>
+                        <h3>Rituales Matutinos que Transformarán tu Vida</h3>
+                        <p>Descubre cómo crear una rutina matutina que nutra tu cuerpo, mente y espíritu cada día.</p>
+                        <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Post 6 -->
+                <div class="blog-card" data-category="coaching">
+                    <div class="blog-card-image">
+                        <div class="blog-placeholder"><i class="fas fa-mountain"></i></div>
+                        <span class="blog-card-category cat-coaching">Coaching</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            <span><i class="fas fa-calendar"></i> 8 Ene, 2026</span>
+                            <span><i class="fas fa-clock"></i> 5 min</span>
+                        </div>
+                        <h3>Cómo Superar las Creencias Limitantes</h3>
+                        <p>Identifica y transforma esas voces internas que te impiden alcanzar tu máximo potencial.</p>
+                        <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pagination -->
+            <div class="blog-pagination">
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border: none;">
+                <p>&copy; 2026 Reconecta con tu Vida. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile nav
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Category filter
+        const catBtns = document.querySelectorAll('.category-btn');
+        const blogCards = document.querySelectorAll('.blog-card');
+
+        catBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                catBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const cat = btn.dataset.cat;
+                blogCards.forEach(card => {
+                    if (cat === 'todos' || card.dataset.category === cat) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
