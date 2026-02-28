@@ -183,31 +183,25 @@
 
            IF WS-FILE-STATUS NOT = "00"
                DISPLAY "   NO HAY USUARIOS REGISTRADOS AUN."
-               GO TO 3000-FIN-LISTAR
-           END-IF
-
-           PERFORM UNTIL WS-FILE-STATUS NOT = "00"
-               READ ARCHIVO-USUARIOS INTO REGISTRO-USUARIO
-                   AT END
-                       MOVE "10" TO WS-FILE-STATUS
-                   NOT AT END
-                       ADD 1 TO WS-CONTEO-USUARIOS
-                       DISPLAY "   ID    : " RU-ID-USUARIO
-                       DISPLAY "   NOMBRE: " RU-NOMBRE " "
-                               RU-APELLIDO
-                       DISPLAY "   EMAIL : " RU-EMAIL
-                       DISPLAY "   TEL   : " RU-TELEFONO
-                       DISPLAY "   ALTA  : " RU-FECHA-ALTA
-                       DISPLAY "   --------------------------------"
-               END-READ
-           END-PERFORM
-
-           CLOSE ARCHIVO-USUARIOS
-
-           DISPLAY "   TOTAL USUARIOS: " WS-CONTEO-USUARIOS
-
-           3000-FIN-LISTAR.
-           EXIT.
+           ELSE
+               PERFORM UNTIL WS-FILE-STATUS NOT = "00"
+                   READ ARCHIVO-USUARIOS INTO REGISTRO-USUARIO
+                       AT END
+                           MOVE "10" TO WS-FILE-STATUS
+                       NOT AT END
+                           ADD 1 TO WS-CONTEO-USUARIOS
+                           DISPLAY "   ID    : " RU-ID-USUARIO
+                           DISPLAY "   NOMBRE: " RU-NOMBRE " "
+                                   RU-APELLIDO
+                           DISPLAY "   EMAIL : " RU-EMAIL
+                           DISPLAY "   TEL   : " RU-TELEFONO
+                           DISPLAY "   ALTA  : " RU-FECHA-ALTA
+                           DISPLAY "   --------------------------------"
+                   END-READ
+               END-PERFORM
+               CLOSE ARCHIVO-USUARIOS
+               DISPLAY "   TOTAL USUARIOS: " WS-CONTEO-USUARIOS
+           END-IF.
 
       *----------------------------------------------------------------
        4000-BUSCAR-USUARIO.
@@ -222,34 +216,28 @@
 
            IF WS-FILE-STATUS NOT = "00"
                DISPLAY "   NO HAY USUARIOS REGISTRADOS."
-               GO TO 4000-FIN-BUSCAR
-           END-IF
-
-           MOVE "N" TO WS-CONTINUAR
-
-           PERFORM UNTIL WS-FILE-STATUS NOT = "00"
-               READ ARCHIVO-USUARIOS INTO REGISTRO-USUARIO
-                   AT END
-                       MOVE "10" TO WS-FILE-STATUS
-                   NOT AT END
-                       IF RU-ID-USUARIO = WS-ID
-                           MOVE "S" TO WS-CONTINUAR
-                           DISPLAY "   USUARIO ENCONTRADO:"
-                           DISPLAY "   ID    : " RU-ID-USUARIO
-                           DISPLAY "   NOMBRE: " RU-NOMBRE " "
-                                   RU-APELLIDO
-                           DISPLAY "   EMAIL : " RU-EMAIL
-                           DISPLAY "   TEL   : " RU-TELEFONO
-                           DISPLAY "   ALTA  : " RU-FECHA-ALTA
-                       END-IF
-               END-READ
-           END-PERFORM
-
-           CLOSE ARCHIVO-USUARIOS
-
-           IF WS-CONTINUAR = "N"
-               DISPLAY "   USUARIO CON ID " WS-ID " NO ENCONTRADO."
-           END-IF
-
-           4000-FIN-BUSCAR.
-           EXIT.
+           ELSE
+               MOVE "N" TO WS-CONTINUAR
+               PERFORM UNTIL WS-FILE-STATUS NOT = "00"
+                   READ ARCHIVO-USUARIOS INTO REGISTRO-USUARIO
+                       AT END
+                           MOVE "10" TO WS-FILE-STATUS
+                       NOT AT END
+                           IF RU-ID-USUARIO = WS-ID
+                               MOVE "S" TO WS-CONTINUAR
+                               DISPLAY "   USUARIO ENCONTRADO:"
+                               DISPLAY "   ID    : " RU-ID-USUARIO
+                               DISPLAY "   NOMBRE: " RU-NOMBRE " "
+                                       RU-APELLIDO
+                               DISPLAY "   EMAIL : " RU-EMAIL
+                               DISPLAY "   TEL   : " RU-TELEFONO
+                               DISPLAY "   ALTA  : " RU-FECHA-ALTA
+                           END-IF
+                   END-READ
+               END-PERFORM
+               CLOSE ARCHIVO-USUARIOS
+               IF WS-CONTINUAR = "N"
+                   DISPLAY "   USUARIO CON ID " WS-ID
+                           " NO ENCONTRADO."
+               END-IF
+           END-IF.
