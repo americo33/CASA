@@ -92,9 +92,15 @@ app.get('/resources', (req, res) => {
 app.get('/error', (req, res) => res.render('error', { message: 'Página no encontrada' }));
 app.use((req, res) => res.status(404).render('error', { message: 'Página no encontrada' }));
 
-app.listen(PORT, () => {
-  console.log(`\n  🚀 VamoArriba está corriendo en http://localhost:${PORT}\n`);
-  console.log(`  📧 Admin: admin / admin1234`);
-  console.log(`  📧 Coaches: maria@vamoarriba.com / coach123`);
-  console.log(`  📧 Coachees: pedro@gmail.com / user123\n`);
+// Initialize database then start server
+db.init().then(() => {
+  app.listen(PORT, () => {
+    console.log(`\n  VamoArriba esta corriendo en http://localhost:${PORT}\n`);
+    console.log(`  Admin: admin / admin1234`);
+    console.log(`  Coaches: maria@vamoarriba.com / coach123`);
+    console.log(`  Coachees: pedro@gmail.com / user123\n`);
+  });
+}).catch(err => {
+  console.error('Error initializing database:', err);
+  process.exit(1);
 });
