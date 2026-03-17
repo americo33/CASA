@@ -1,0 +1,73 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-user-tie"></i> Nuestros Coaches</h1>
+    <p>Encuentra el coach perfecto para tu camino de crecimiento</p>
+  </div>
+</div>
+
+<div class="container section">
+  <!-- Filters -->
+  <div class="filters-bar">
+    <form method="GET" action="/coaches" class="filters-form">
+      <div class="filter-group">
+        <input type="text" name="buscar" value="<%= filtros.buscar || '' %>" placeholder="Buscar coach..." class="filter-input">
+      </div>
+      <div class="filter-group">
+        <select name="especialidad" class="filter-select">
+          <option value="">Todas las especialidades</option>
+          <% especialidades.forEach(e => { %>
+            <option value="<%= e.especialidad %>" <%= filtros.especialidad === e.especialidad ? 'selected' : '' %>><%= e.especialidad %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="filter-group">
+        <select name="pais" class="filter-select">
+          <option value="">Todos los países</option>
+          <% paises.forEach(p => { %>
+            <option value="<%= p.pais %>" <%= filtros.pais === p.pais ? 'selected' : '' %>><%= p.pais %></option>
+          <% }) %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+      <a href="/coaches" class="btn btn-outline btn-sm">Limpiar</a>
+    </form>
+  </div>
+
+  <div class="grid-3">
+    <% coaches.forEach(coach => { %>
+      <div class="coach-card">
+        <div class="coach-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <h3><%= coach.nombre %> <%= coach.apellido %></h3>
+        <span class="coach-specialty"><%= coach.especialidad %></span>
+        <p class="coach-cert"><i class="fas fa-certificate"></i> <%= coach.certificacion %></p>
+        <div class="coach-stats">
+          <div><strong><%= coach.total_coachees || 0 %></strong> Coachees</div>
+          <div><strong><%= coach.total_sesiones || 0 %></strong> Sesiones</div>
+          <div><strong><%= coach.rating || 'N/A' %></strong> <i class="fas fa-star"></i></div>
+        </div>
+        <p class="coach-bio"><%= coach.bio ? coach.bio.substring(0, 150) + '...' : '' %></p>
+        <div class="coach-location"><i class="fas fa-map-marker-alt"></i> <%= coach.ciudad %>, <%= coach.pais %></div>
+        <div class="coach-actions">
+          <a href="/coach/<%= coach.id %>" class="btn btn-primary btn-sm">Ver Perfil</a>
+          <% if (user) { %>
+            <a href="/messages/<%= coach.id %>" class="btn btn-outline btn-sm">Contactar</a>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <% if (coaches.length === 0) { %>
+    <div class="text-center p-2">
+      <i class="fas fa-search" style="font-size:3rem;color:var(--indigo-300)"></i>
+      <h3>No se encontraron coaches</h3>
+      <p>Intenta con otros filtros de búsqueda</p>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,182 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <a href="/sessions" class="back-link"><i class="fas fa-arrow-left"></i> Volver a Sesiones</a>
+    <h1><i class="fas fa-calendar-check"></i> <%= session.titulo %></h1>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="session-detail-layout">
+    <div class="session-detail-main">
+      <!-- Session Info -->
+      <div class="card">
+        <div class="session-info-grid">
+          <div class="info-item">
+            <i class="fas fa-bullseye"></i>
+            <div><strong>Meta:</strong> <%= session.meta_titulo %></div>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-user-tie"></i>
+            <div><strong>Coach:</strong> <%= session.coach_nombre %> <%= session.coach_apellido %></div>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-user"></i>
+            <div><strong>Coachee:</strong> <%= session.coachee_nombre %> <%= session.coachee_apellido %></div>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <div><strong>Fecha:</strong> <%= new Date(session.fecha).toLocaleDateString('es', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) %></div>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-clock"></i>
+            <div><strong>Duración:</strong> <%= session.duracion %> minutos</div>
+          </div>
+          <div class="info-item">
+            <span class="status-badge status-<%= session.estado %>"><%= session.estado %></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROW Method Form -->
+      <form method="POST" action="/sessions/<%= session.id %>/grow">
+        <div class="grow-session">
+          <h2 class="grow-title">Método GROW - Sesión de Coaching</h2>
+
+          <div class="grow-section grow-section-g">
+            <div class="grow-section-header">
+              <div class="grow-section-letter">G</div>
+              <div>
+                <h3>Goal <span>(Meta)</span></h3>
+                <p>¿Qué quieres lograr? ¿Cuál es tu objetivo para esta sesión?</p>
+              </div>
+            </div>
+            <textarea name="grow_goal" rows="4" placeholder="Define el objetivo específico de esta sesión de coaching. ¿Qué resultado deseas obtener?"><%= session.grow_goal || '' %></textarea>
+          </div>
+
+          <div class="grow-section grow-section-r">
+            <div class="grow-section-header">
+              <div class="grow-section-letter">R</div>
+              <div>
+                <h3>Reality <span>(Realidad)</span></h3>
+                <p>¿Cuál es tu situación actual? ¿Dónde estás ahora respecto a tu meta?</p>
+              </div>
+            </div>
+            <textarea name="grow_reality" rows="4" placeholder="Describe honestamente tu situación actual. ¿Qué has intentado? ¿Qué recursos tienes? ¿Qué obstáculos enfrentas?"><%= session.grow_reality || '' %></textarea>
+          </div>
+
+          <div class="grow-section grow-section-o">
+            <div class="grow-section-header">
+              <div class="grow-section-letter">O</div>
+              <div>
+                <h3>Options <span>(Opciones)</span></h3>
+                <p>¿Qué alternativas tienes? ¿Qué podrías hacer diferente?</p>
+              </div>
+            </div>
+            <textarea name="grow_options" rows="4" placeholder="Lista todas las opciones y alternativas posibles. Sin juzgar, explora creativamente qué caminos podrías tomar."><%= session.grow_options || '' %></textarea>
+          </div>
+
+          <div class="grow-section grow-section-w">
+            <div class="grow-section-header">
+              <div class="grow-section-letter">W</div>
+              <div>
+                <h3>Will <span>(Voluntad / Compromiso)</span></h3>
+                <p>¿Qué vas a hacer? ¿Cuál es tu plan de acción concreto?</p>
+              </div>
+            </div>
+            <textarea name="grow_will" rows="4" placeholder="Define acciones concretas con plazos. ¿Qué harás esta semana? ¿Cuál es tu primer paso? ¿Cómo medirás tu progreso?"><%= session.grow_will || '' %></textarea>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="card mt-2">
+          <h3><i class="fas fa-sticky-note"></i> Notas</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Notas del Coach</label>
+              <textarea name="notas_coach" rows="3" placeholder="Observaciones y notas del coach..."><%= session.notas_coach || '' %></textarea>
+            </div>
+            <div class="form-group">
+              <label>Notas del Coachee</label>
+              <textarea name="notas_coachee" rows="3" placeholder="Reflexiones y notas del coachee..."><%= session.notas_coachee || '' %></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div class="card mt-2">
+          <div class="form-group">
+            <label>Estado de la sesión</label>
+            <select name="estado">
+              <option value="programada" <%= session.estado === 'programada' ? 'selected' : '' %>>Programada</option>
+              <option value="en_curso" <%= session.estado === 'en_curso' ? 'selected' : '' %>>En Curso</option>
+              <option value="completada" <%= session.estado === 'completada' ? 'selected' : '' %>>Completada</option>
+              <option value="cancelada" <%= session.estado === 'cancelada' ? 'selected' : '' %>>Cancelada</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Guardar Sesión GROW <i class="fas fa-save"></i></button>
+        </div>
+      </form>
+
+      <!-- Rating (for coachees) -->
+      <% if (session.estado === 'completada' && user.rol !== 'coach') { %>
+      <div class="card mt-2">
+        <h3><i class="fas fa-star"></i> Calificar Sesión</h3>
+        <form method="POST" action="/sessions/<%= session.id %>/rate">
+          <div class="form-group">
+            <label>Calificación</label>
+            <select name="calificacion">
+              <option value="5" <%= session.calificacion === 5 ? 'selected' : '' %>>5 - Excelente</option>
+              <option value="4" <%= session.calificacion === 4 ? 'selected' : '' %>>4 - Muy buena</option>
+              <option value="3" <%= session.calificacion === 3 ? 'selected' : '' %>>3 - Buena</option>
+              <option value="2" <%= session.calificacion === 2 ? 'selected' : '' %>>2 - Regular</option>
+              <option value="1" <%= session.calificacion === 1 ? 'selected' : '' %>>1 - Necesita mejorar</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Feedback</label>
+            <textarea name="feedback" rows="3" placeholder="Comparte tu experiencia..."><%= session.feedback || '' %></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">Enviar Calificación</button>
+        </form>
+      </div>
+      <% } %>
+    </div>
+
+    <aside class="session-detail-sidebar">
+      <div class="card">
+        <h4><i class="fas fa-info-circle"></i> Sobre el Método GROW</h4>
+        <p>El método GROW fue desarrollado por Sir John Whitmore y es el modelo de coaching más utilizado en el mundo.</p>
+        <div class="grow-mini">
+          <div class="grow-mini-item"><span class="grow-dot grow-dot-g"></span> <strong>G</strong>oal - Define tu meta SMART</div>
+          <div class="grow-mini-item"><span class="grow-dot grow-dot-r"></span> <strong>R</strong>eality - Evalúa dónde estás</div>
+          <div class="grow-mini-item"><span class="grow-dot grow-dot-o"></span> <strong>O</strong>ptions - Explora alternativas</div>
+          <div class="grow-mini-item"><span class="grow-dot grow-dot-w"></span> <strong>W</strong>ill - Compromete acciones</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4><i class="fas fa-chart-line"></i> Progreso de la Meta</h4>
+        <p><%= session.meta_titulo %></p>
+        <div class="progress-bar progress-bar-lg">
+          <div class="progress-fill" style="width:<%= session.meta_progreso %>%"></div>
+        </div>
+        <span class="progress-text"><%= session.meta_progreso %>%</span>
+      </div>
+
+      <div class="card">
+        <h4><i class="fas fa-lightbulb"></i> Preguntas Poderosas</h4>
+        <ul class="powerful-questions">
+          <li>¿Qué es lo más importante para ti ahora?</li>
+          <li>¿Qué pasaría si no hicieras nada?</li>
+          <li>¿Qué consejo le darías a alguien en tu situación?</li>
+          <li>¿Qué necesitas soltar para avanzar?</li>
+          <li>¿Cuál es el primer paso más pequeño?</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

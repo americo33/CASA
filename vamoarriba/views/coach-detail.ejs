@@ -1,0 +1,93 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <a href="/coaches" class="back-link"><i class="fas fa-arrow-left"></i> Volver a Coaches</a>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="profile-layout">
+    <div class="profile-main">
+      <div class="card profile-card">
+        <div class="profile-hero">
+          <div class="profile-avatar-lg"><i class="fas fa-user-circle"></i></div>
+          <div class="profile-info">
+            <h1><%= coach.nombre %> <%= coach.apellido %></h1>
+            <span class="coach-specialty"><%= coach.especialidad %></span>
+            <p class="coach-cert"><i class="fas fa-certificate"></i> <%= coach.certificacion %></p>
+            <div class="profile-location"><i class="fas fa-map-marker-alt"></i> <%= coach.ciudad %>, <%= coach.pais %></div>
+          </div>
+          <div class="profile-stats-row">
+            <div class="profile-stat"><strong><%= coach.total_coachees || 0 %></strong><span>Coachees</span></div>
+            <div class="profile-stat"><strong><%= coach.total_sesiones || 0 %></strong><span>Sesiones</span></div>
+            <div class="profile-stat"><strong><%= coach.rating || 'N/A' %></strong><span>Rating</span></div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <h3>Sobre mí</h3>
+          <p><%= coach.bio %></p>
+
+          <% if (coach.linkedin) { %>
+            <p><i class="fab fa-linkedin"></i> <a href="https://<%= coach.linkedin %>" target="_blank">LinkedIn</a></p>
+          <% } %>
+          <% if (coach.telefono) { %>
+            <p><i class="fas fa-phone"></i> <%= coach.telefono %></p>
+          <% } %>
+        </div>
+
+        <% if (user) { %>
+          <div class="profile-actions">
+            <a href="/messages/<%= coach.id %>" class="btn btn-primary">Enviar Mensaje</a>
+          </div>
+        <% } else { %>
+          <div class="profile-actions">
+            <a href="/register" class="btn btn-primary">Regístrate para Contactar</a>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Testimonios -->
+      <% if (testimonios.length > 0) { %>
+      <div class="card">
+        <div class="card-header"><h3><i class="fas fa-star"></i> Testimonios</h3></div>
+        <% testimonios.forEach(t => { %>
+          <div class="testimonial-item">
+            <div class="testimonial-stars">
+              <% for (let i = 0; i < t.calificacion; i++) { %><i class="fas fa-star"></i><% } %>
+            </div>
+            <p>"<%= t.contenido %>"</p>
+            <strong>— <%= t.nombre %> <%= t.apellido %></strong>
+          </div>
+        <% }) %>
+      </div>
+      <% } %>
+    </div>
+
+    <aside class="profile-sidebar">
+      <div class="card">
+        <h4>Especialidad</h4>
+        <p><i class="fas fa-star"></i> <%= coach.especialidad %></p>
+        <h4>Certificación</h4>
+        <p><i class="fas fa-certificate"></i> <%= coach.certificacion %></p>
+        <h4>Ubicación</h4>
+        <p><i class="fas fa-map-marker-alt"></i> <%= coach.ciudad %>, <%= coach.pais %></p>
+      </div>
+
+      <% if (metas.length > 0) { %>
+      <div class="card">
+        <h4>Metas Recientes</h4>
+        <% metas.forEach(m => { %>
+          <div class="mini-goal">
+            <span class="goal-category"><%= m.categoria %></span>
+            <p><%= m.titulo %></p>
+            <div class="progress-bar"><div class="progress-fill" style="width:<%= m.progreso %>%"></div></div>
+          </div>
+        <% }) %>
+      </div>
+      <% } %>
+    </aside>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

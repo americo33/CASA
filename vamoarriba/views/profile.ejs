@@ -1,0 +1,93 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Volver</a>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="profile-layout">
+    <div class="profile-main">
+      <div class="card profile-card">
+        <div class="profile-hero">
+          <div class="profile-avatar-lg"><i class="fas fa-user-circle"></i></div>
+          <div class="profile-info">
+            <h1><%= profile.nombre %> <%= profile.apellido %></h1>
+            <span class="badge-role badge-<%= profile.rol %>"><%= profile.rol.charAt(0).toUpperCase() + profile.rol.slice(1) %></span>
+            <% if (profile.especialidad) { %>
+              <span class="coach-specialty"><%= profile.especialidad %></span>
+            <% } %>
+            <% if (profile.certificacion) { %>
+              <p class="coach-cert"><i class="fas fa-certificate"></i> <%= profile.certificacion %></p>
+            <% } %>
+            <% if (profile.ciudad && profile.pais) { %>
+              <div class="profile-location"><i class="fas fa-map-marker-alt"></i> <%= profile.ciudad %>, <%= profile.pais %></div>
+            <% } %>
+          </div>
+          <div class="profile-stats-row">
+            <div class="profile-stat"><strong><%= publicaciones.length %></strong><span>Publicaciones</span></div>
+            <div class="profile-stat"><strong><%= metas.length %></strong><span>Metas</span></div>
+            <div class="profile-stat"><strong><%= totalConexiones %></strong><span>Conexiones</span></div>
+          </div>
+        </div>
+        <% if (profile.bio) { %>
+          <div class="profile-body">
+            <h3>Sobre mí</h3>
+            <p><%= profile.bio %></p>
+          </div>
+        <% } %>
+        <% if (user && user.id === profile.id) { %>
+          <div class="profile-actions">
+            <a href="/profile/edit/me" class="btn btn-outline">Editar Perfil</a>
+          </div>
+        <% } else if (user) { %>
+          <div class="profile-actions">
+            <a href="/messages/<%= profile.id %>" class="btn btn-primary">Enviar Mensaje</a>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Posts -->
+      <% publicaciones.forEach(post => { %>
+        <div class="card post-card">
+          <div class="post-body">
+            <p><%= post.contenido %></p>
+          </div>
+          <div class="post-footer-meta">
+            <span><i class="fas fa-heart"></i> <%= post.total_likes %></span>
+            <span><i class="fas fa-comment"></i> <%= post.total_comentarios %></span>
+            <span><%= new Date(post.created_at).toLocaleDateString('es') %></span>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <aside class="profile-sidebar">
+      <% if (profile.telefono || profile.linkedin || profile.sitio_web || profile.email) { %>
+      <div class="card">
+        <h4>Contacto</h4>
+        <% if (profile.email) { %><p><i class="fas fa-envelope"></i> <%= profile.email %></p><% } %>
+        <% if (profile.telefono) { %><p><i class="fas fa-phone"></i> <%= profile.telefono %></p><% } %>
+        <% if (profile.linkedin) { %><p><i class="fab fa-linkedin"></i> <a href="https://<%= profile.linkedin %>">LinkedIn</a></p><% } %>
+        <% if (profile.sitio_web) { %><p><i class="fas fa-globe"></i> <a href="<%= profile.sitio_web %>"><%= profile.sitio_web %></a></p><% } %>
+      </div>
+      <% } %>
+
+      <% if (metas.length > 0) { %>
+      <div class="card">
+        <h4>Metas</h4>
+        <% metas.slice(0, 5).forEach(m => { %>
+          <div class="mini-goal">
+            <span class="goal-category"><%= m.categoria %></span>
+            <p><%= m.titulo %></p>
+            <div class="progress-bar"><div class="progress-fill" style="width:<%= m.progreso %>%"></div></div>
+          </div>
+        <% }) %>
+      </div>
+      <% } %>
+    </aside>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

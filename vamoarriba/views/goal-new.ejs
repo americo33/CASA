@@ -1,0 +1,66 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <a href="/goals" class="back-link"><i class="fas fa-arrow-left"></i> Volver</a>
+    <h1><i class="fas fa-plus-circle"></i> Nueva Meta</h1>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="form-container">
+    <div class="card">
+      <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/goals/new" class="auth-form">
+        <div class="form-group">
+          <label>Título de la Meta</label>
+          <input type="text" name="titulo" placeholder="Ej: Desarrollar liderazgo transformacional" required>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea name="descripcion" rows="4" placeholder="Describe tu meta en detalle. ¿Qué quieres lograr y por qué es importante?" required></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select name="categoria">
+              <option value="Liderazgo">Liderazgo</option>
+              <option value="Carrera">Carrera</option>
+              <option value="Emprendimiento">Emprendimiento</option>
+              <option value="Bienestar">Bienestar</option>
+              <option value="Desarrollo Personal">Desarrollo Personal</option>
+              <option value="Financiero">Financiero</option>
+              <option value="Deportivo">Deportivo</option>
+              <option value="Productividad">Productividad</option>
+              <option value="Relaciones">Relaciones</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha Objetivo</label>
+            <input type="date" name="fecha_objetivo">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Coach (opcional)</label>
+          <select name="coach_id">
+            <option value="">Sin coach asignado</option>
+            <% coaches.forEach(c => { %>
+              <option value="<%= c.id %>"><%= c.nombre %> <%= c.apellido %> - <%= c.especialidad %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">Crear Meta <i class="fas fa-bullseye"></i></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

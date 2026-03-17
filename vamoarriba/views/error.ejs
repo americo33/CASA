@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+
+<div class="auth-page">
+  <div class="auth-card text-center">
+    <i class="fas fa-exclamation-triangle" style="font-size:4rem;color:var(--indigo-400)"></i>
+    <h2><%= message || 'Error' %></h2>
+    <p>Lo sentimos, algo no salió como esperábamos.</p>
+    <a href="/" class="btn btn-primary">Volver al Inicio</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,68 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-envelope"></i> Mensajes</h1>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="messages-layout">
+    <div class="conversations-list">
+      <h3>Conversaciones</h3>
+      <% if (conversations.length > 0) { %>
+        <% conversations.forEach(c => { %>
+          <a href="/messages/<%= c.id %>" class="conversation-item <%= chat && chat.id === c.id ? 'active' : '' %>">
+            <div class="conv-avatar"><i class="fas fa-user-circle"></i></div>
+            <div class="conv-info">
+              <strong><%= c.nombre %> <%= c.apellido %></strong>
+              <span class="badge-role badge-<%= c.rol %> badge-sm"><%= c.rol %></span>
+              <% if (c.ultimo_mensaje) { %>
+                <p class="conv-preview"><%= c.ultimo_mensaje.substring(0, 50) %>...</p>
+              <% } %>
+            </div>
+            <% if (c.no_leidos > 0) { %>
+              <span class="badge"><%= c.no_leidos %></span>
+            <% } %>
+          </a>
+        <% }) %>
+      <% } else { %>
+        <p class="text-muted p-1">No tienes conversaciones aún</p>
+      <% } %>
+    </div>
+
+    <div class="chat-area">
+      <% if (chat) { %>
+        <div class="chat-header">
+          <div class="conv-avatar"><i class="fas fa-user-circle"></i></div>
+          <div>
+            <strong><%= chat.nombre %> <%= chat.apellido %></strong>
+            <span class="badge-role badge-<%= chat.rol %> badge-sm"><%= chat.rol %></span>
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <% messages.forEach(m => { %>
+            <div class="message <%= m.emisor_id === user.id ? 'message-sent' : 'message-received' %>">
+              <div class="message-bubble">
+                <p><%= m.contenido %></p>
+                <span class="message-time"><%= new Date(m.created_at).toLocaleTimeString('es', {hour:'2-digit', minute:'2-digit'}) %></span>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+        <form method="POST" action="/messages/<%= chat.id %>" class="chat-input">
+          <input type="text" name="contenido" placeholder="Escribe un mensaje..." required autofocus>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      <% } else { %>
+        <div class="chat-empty">
+          <i class="fas fa-comments" style="font-size:4rem;color:var(--indigo-300)"></i>
+          <h3>Selecciona una conversación</h3>
+          <p>O inicia una nueva desde el perfil de un coach</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

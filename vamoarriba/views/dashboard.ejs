@@ -1,0 +1,171 @@
+<%- include('partials/header') %>
+<% const title = 'Dashboard'; %>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-profile">
+      <div class="sidebar-avatar"><i class="fas fa-user-circle"></i></div>
+      <h3><%= user.nombre %> <%= user.apellido %></h3>
+      <span class="badge-role badge-<%= user.rol %>"><%= user.rol.charAt(0).toUpperCase() + user.rol.slice(1) %></span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/dashboard" class="active"><i class="fas fa-home"></i> Feed</a>
+      <a href="/goals"><i class="fas fa-bullseye"></i> Mis Metas</a>
+      <a href="/sessions"><i class="fas fa-calendar"></i> Sesiones</a>
+      <a href="/coaches"><i class="fas fa-user-tie"></i> Coaches</a>
+      <a href="/messages"><i class="fas fa-envelope"></i> Mensajes
+        <% if (unreadMessages > 0) { %><span class="badge"><%= unreadMessages %></span><% } %>
+      </a>
+      <a href="/resources"><i class="fas fa-book"></i> Recursos</a>
+      <a href="/profile"><i class="fas fa-user"></i> Mi Perfil</a>
+    </nav>
+
+    <!-- Quick Stats -->
+    <div class="sidebar-stats">
+      <h4>Resumen</h4>
+      <% if (user.rol === 'coach' || user.rol === 'admin') { %>
+        <div class="stat-item"><span><%= stats.totalCoachees || 0 %></span> Coachees</div>
+        <div class="stat-item"><span><%= stats.totalSesiones || 0 %></span> Sesiones</div>
+        <div class="stat-item"><span><%= stats.metasActivas || 0 %></span> Metas Activas</div>
+      <% } else { %>
+        <div class="stat-item"><span><%= stats.totalMetas || 0 %></span> Metas</div>
+        <div class="stat-item"><span><%= stats.totalSesiones || 0 %></span> Sesiones</div>
+        <div class="stat-item"><span><%= stats.metasCompletadas || 0 %></span> Completadas</div>
+      <% } %>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Create Post -->
+    <div class="card create-post">
+      <form method="POST" action="/post">
+        <div class="create-post-header">
+          <div class="avatar-sm"><i class="fas fa-user-circle"></i></div>
+          <textarea name="contenido" placeholder="¿Qué quieres compartir hoy, <%= user.nombre %>?" rows="3" required></textarea>
+        </div>
+        <div class="create-post-actions">
+          <button type="submit" class="btn btn-primary btn-sm">Publicar <i class="fas fa-paper-plane"></i></button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Goals Preview -->
+    <% if (metas.length > 0) { %>
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="fas fa-bullseye"></i> Metas Activas</h3>
+        <a href="/goals" class="link">Ver todas</a>
+      </div>
+      <div class="goals-preview">
+        <% metas.slice(0, 3).forEach(meta => { %>
+          <div class="goal-item">
+            <div class="goal-info">
+              <h4><%= meta.titulo %></h4>
+              <span class="goal-category"><%= meta.categoria %></span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: <%= meta.progreso %>%"></div>
+            </div>
+            <span class="progress-text"><%= meta.progreso %>%</span>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
+
+    <!-- Upcoming Sessions -->
+    <% if (sesiones.length > 0) { %>
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="fas fa-calendar"></i> Próximas Sesiones</h3>
+        <a href="/sessions" class="link">Ver todas</a>
+      </div>
+      <% sesiones.slice(0, 3).forEach(s => { %>
+        <div class="session-preview">
+          <div class="session-date">
+            <i class="fas fa-clock"></i>
+            <%= new Date(s.fecha).toLocaleDateString('es', {day:'numeric', month:'short'}) %>
+          </div>
+          <div class="session-info">
+            <h4><%= s.titulo %></h4>
+            <p><%= s.meta_titulo %></p>
+          </div>
+          <span class="status-badge status-<%= s.estado %>"><%= s.estado %></span>
+        </div>
+      <% }) %>
+    </div>
+    <% } %>
+
+    <!-- Feed -->
+    <% publicaciones.forEach(post => { %>
+      <div class="card post-card">
+        <div class="post-header">
+          <div class="avatar-sm"><i class="fas fa-user-circle"></i></div>
+          <div class="post-author">
+            <a href="/profile/<%= post.usuario_id %>"><strong><%= post.nombre %> <%= post.apellido %></strong></a>
+            <span class="post-meta">
+              <span class="badge-role badge-<%= post.autor_rol %> badge-sm"><%= post.autor_rol %></span>
+              &middot; <%= new Date(post.created_at).toLocaleDateString('es', {day:'numeric', month:'short', year:'numeric'}) %>
+            </span>
+          </div>
+        </div>
+        <div class="post-body">
+          <p><%= post.contenido %></p>
+        </div>
+        <div class="post-actions">
+          <form method="POST" action="/post/<%= post.id %>/like" style="display:inline">
+            <button type="submit" class="post-action-btn <%= post.user_liked ? 'liked' : '' %>">
+              <i class="<%= post.user_liked ? 'fas' : 'far' %> fa-heart"></i> <%= post.total_likes %>
+            </button>
+          </form>
+          <button class="post-action-btn" onclick="toggleComments(<%= post.id %>)">
+            <i class="far fa-comment"></i> <%= post.total_comentarios %>
+          </button>
+        </div>
+        <div class="post-comments" id="comments-<%= post.id %>" style="display:none">
+          <form method="POST" action="/post/<%= post.id %>/comment" class="comment-form">
+            <input type="text" name="contenido" placeholder="Escribe un comentario..." required>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+
+    <% if (publicaciones.length === 0) { %>
+      <div class="card text-center p-2">
+        <i class="fas fa-newspaper" style="font-size:3rem;color:var(--indigo-300)"></i>
+        <h3>No hay publicaciones aún</h3>
+        <p>¡Sé el primero en compartir algo con la comunidad!</p>
+      </div>
+    <% } %>
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="sidebar-right">
+    <div class="card">
+      <h4><i class="fas fa-fire"></i> Método GROW</h4>
+      <div class="grow-mini">
+        <div class="grow-mini-item"><span class="grow-dot grow-dot-g"></span> <strong>G</strong>oal - Define tu meta</div>
+        <div class="grow-mini-item"><span class="grow-dot grow-dot-r"></span> <strong>R</strong>eality - Evalúa tu realidad</div>
+        <div class="grow-mini-item"><span class="grow-dot grow-dot-o"></span> <strong>O</strong>ptions - Explora opciones</div>
+        <div class="grow-mini-item"><span class="grow-dot grow-dot-w"></span> <strong>W</strong>ill - Compromiso de acción</div>
+      </div>
+    </div>
+    <div class="card">
+      <h4><i class="fas fa-lightbulb"></i> Tip del Día</h4>
+      <p class="tip-text">Las preguntas poderosas abren puertas que las respuestas no pueden. En tu próxima sesión, escucha más y pregunta con curiosidad genuina.</p>
+    </div>
+    <% if (user.rol === 'coachee') { %>
+    <div class="card">
+      <h4><i class="fas fa-plus-circle"></i> Acciones Rápidas</h4>
+      <a href="/goals/new" class="btn btn-outline btn-sm btn-block mb-1">Nueva Meta</a>
+      <a href="/coaches" class="btn btn-outline btn-sm btn-block mb-1">Buscar Coach</a>
+      <a href="/sessions/new" class="btn btn-outline btn-sm btn-block">Agendar Sesión</a>
+    </div>
+    <% } %>
+  </aside>
+</div>
+
+<%- include('partials/footer') %>

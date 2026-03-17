@@ -1,0 +1,57 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-bullseye"></i> Mis Metas</h1>
+    <p>Gestiona y da seguimiento a tus metas de coaching</p>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="page-actions">
+    <a href="/goals/new" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Meta</a>
+  </div>
+
+  <% if (metas.length > 0) { %>
+    <div class="goals-grid">
+      <% metas.forEach(meta => { %>
+        <div class="card goal-card">
+          <div class="goal-card-header">
+            <span class="goal-category"><%= meta.categoria %></span>
+            <span class="status-badge status-<%= meta.estado %>"><%= meta.estado %></span>
+          </div>
+          <h3><%= meta.titulo %></h3>
+          <p><%= meta.descripcion %></p>
+          <% if (user.rol === 'coach' || user.rol === 'admin') { %>
+            <p class="meta-coach"><i class="fas fa-user"></i> <%= meta.coachee_nombre %> <%= meta.coachee_apellido %></p>
+          <% } else if (meta.coach_nombre) { %>
+            <p class="meta-coach"><i class="fas fa-user-tie"></i> Coach: <%= meta.coach_nombre %> <%= meta.coach_apellido %></p>
+          <% } %>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:<%= meta.progreso %>%"></div>
+            </div>
+            <span class="progress-text"><%= meta.progreso %>%</span>
+          </div>
+          <% if (meta.fecha_objetivo) { %>
+            <p class="goal-deadline"><i class="fas fa-flag-checkered"></i> Objetivo: <%= new Date(meta.fecha_objetivo).toLocaleDateString('es', {day:'numeric', month:'long', year:'numeric'}) %></p>
+          <% } %>
+          <form method="POST" action="/goals/<%= meta.id %>/progress" class="progress-form">
+            <input type="range" name="progreso" value="<%= meta.progreso %>" min="0" max="100" class="progress-slider" oninput="this.nextElementSibling.textContent=this.value+'%'">
+            <span class="slider-value"><%= meta.progreso %>%</span>
+            <button type="submit" class="btn btn-outline btn-xs">Actualizar</button>
+          </form>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="card text-center p-2">
+      <i class="fas fa-bullseye" style="font-size:3rem;color:var(--indigo-300)"></i>
+      <h3>No tienes metas aún</h3>
+      <p>Crea tu primera meta y comienza tu viaje de coaching</p>
+      <a href="/goals/new" class="btn btn-primary">Crear Meta</a>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

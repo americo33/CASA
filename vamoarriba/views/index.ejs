@@ -1,0 +1,341 @@
+<%- include('partials/header') %>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
+    <h1>Transforma tu vida con <span class="text-gradient">coaching profesional</span></h1>
+    <p class="hero-subtitle">Conecta con coaches certificados ICF, establece metas claras y alcanza tu máximo potencial con el método GROW</p>
+    <div class="hero-buttons">
+      <a href="/register" class="btn btn-primary btn-lg">Comenzar Ahora <i class="fas fa-arrow-right"></i></a>
+      <a href="#nosotros" class="btn btn-outline btn-lg">Conocer Más</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-number"><%= stats.coaches %></span>
+        <span class="hero-stat-label">Coaches</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-number"><%= stats.coachees %></span>
+        <span class="hero-stat-label">Coachees</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-number"><%= stats.sesiones %></span>
+        <span class="hero-stat-label">Sesiones</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-number"><%= stats.metas %></span>
+        <span class="hero-stat-label">Metas Activas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Nosotros -->
+<section id="nosotros" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Quiénes Somos</span>
+      <h2>Impulsamos tu crecimiento personal y profesional</h2>
+      <p>VamoArriba es la primera red social latinoamericana dedicada exclusivamente al coaching profesional certificado por la ICF</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+        <h3>Coaches Certificados ICF</h3>
+        <p>Todos nuestros coaches cuentan con certificaciones oficiales de la International Coaching Federation, garantizando la más alta calidad profesional.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-seedling"></i></div>
+        <h3>Método GROW</h3>
+        <p>Utilizamos el método GROW (Goal, Reality, Options, Will), el marco de coaching más reconocido mundialmente para lograr resultados transformadores.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-users"></i></div>
+        <h3>Comunidad Activa</h3>
+        <p>Forma parte de una comunidad vibrante de coaches y coachees que comparten experiencias, recursos y apoyo mutuo en su camino de crecimiento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Servicios -->
+<section id="servicios" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Servicios</span>
+      <h2>Todo lo que necesitas para tu transformación</h2>
+    </div>
+    <div class="grid-4">
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+        <h3>Coaching Ejecutivo</h3>
+        <p>Desarrolla tu liderazgo, toma de decisiones y visión estratégica para destacar en tu carrera profesional.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-heart"></i></div>
+        <h3>Coaching de Vida</h3>
+        <p>Encuentra tu propósito, equilibrio y bienestar integral para vivir la vida que realmente deseas.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-rocket"></i></div>
+        <h3>Coaching Emprendedor</h3>
+        <p>Transforma tu idea en un negocio exitoso con acompañamiento estratégico personalizado.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-users-cog"></i></div>
+        <h3>Coaching de Equipos</h3>
+        <p>Potencia la colaboración, comunicación y rendimiento de tus equipos de trabajo.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-dumbbell"></i></div>
+        <h3>Coaching Deportivo</h3>
+        <p>Supera tus límites mentales y alcanza tu máximo rendimiento deportivo con mentalidad ganadora.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-wallet"></i></div>
+        <h3>Coaching Financiero</h3>
+        <p>Construye una relación saludable con el dinero y diseña tu camino hacia la libertad financiera.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-brain"></i></div>
+        <h3>Coaching Mindfulness</h3>
+        <p>Desarrolla atención plena, reduce el estrés y mejora tu productividad de manera consciente.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-exchange-alt"></i></div>
+        <h3>Coaching de Carrera</h3>
+        <p>Navega transiciones profesionales con confianza y encuentra tu verdadera vocación.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Método GROW -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Metodología</span>
+      <h2>El Método GROW de la ICF</h2>
+      <p>Nuestras sesiones de coaching siguen el modelo GROW, reconocido mundialmente como el estándar de oro en coaching profesional</p>
+    </div>
+    <div class="grow-grid">
+      <div class="grow-card grow-g">
+        <div class="grow-letter">G</div>
+        <h3>Goal <span>(Meta)</span></h3>
+        <p>¿Qué quieres lograr? Definimos juntos tu objetivo de manera clara, específica y medible. Es el norte que guiará todo el proceso de coaching.</p>
+        <ul>
+          <li>Definir objetivos SMART</li>
+          <li>Visualizar el resultado deseado</li>
+          <li>Establecer indicadores de éxito</li>
+        </ul>
+      </div>
+      <div class="grow-card grow-r">
+        <div class="grow-letter">R</div>
+        <h3>Reality <span>(Realidad)</span></h3>
+        <p>¿Dónde estás ahora? Exploramos tu situación actual con honestidad y claridad para entender el punto de partida real.</p>
+        <ul>
+          <li>Evaluar la situación actual</li>
+          <li>Identificar fortalezas y recursos</li>
+          <li>Reconocer obstáculos existentes</li>
+        </ul>
+      </div>
+      <div class="grow-card grow-o">
+        <div class="grow-letter">O</div>
+        <h3>Options <span>(Opciones)</span></h3>
+        <p>¿Qué podrías hacer? Generamos múltiples alternativas y estrategias creativas para avanzar hacia tu meta.</p>
+        <ul>
+          <li>Brainstorming de alternativas</li>
+          <li>Evaluar pros y contras</li>
+          <li>Pensar fuera de la caja</li>
+        </ul>
+      </div>
+      <div class="grow-card grow-w">
+        <div class="grow-letter">W</div>
+        <h3>Will <span>(Voluntad)</span></h3>
+        <p>¿Qué vas a hacer? Definimos un plan de acción concreto con compromisos, plazos y accountability.</p>
+        <ul>
+          <li>Plan de acción específico</li>
+          <li>Compromisos con fecha</li>
+          <li>Seguimiento y accountability</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Coaches -->
+<section id="coaches" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Nuestros Coaches</span>
+      <h2>Coaches certificados listos para acompañarte</h2>
+      <p>Profesionales de excelencia con certificaciones ICF y experiencia comprobada</p>
+    </div>
+    <div class="grid-3">
+      <% coaches.forEach(coach => { %>
+        <div class="coach-card">
+          <div class="coach-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <h3><%= coach.nombre %> <%= coach.apellido %></h3>
+          <span class="coach-specialty"><%= coach.especialidad %></span>
+          <p class="coach-cert"><i class="fas fa-certificate"></i> <%= coach.certificacion %></p>
+          <div class="coach-stats">
+            <div><strong><%= coach.total_coachees || 0 %></strong> Coachees</div>
+            <div><strong><%= coach.rating || 'N/A' %></strong> <i class="fas fa-star"></i></div>
+          </div>
+          <p class="coach-bio"><%= coach.bio ? coach.bio.substring(0, 120) + '...' : '' %></p>
+          <div class="coach-location"><i class="fas fa-map-marker-alt"></i> <%= coach.ciudad %>, <%= coach.pais %></div>
+          <a href="/coach/<%= coach.id %>" class="btn btn-outline btn-sm">Ver Perfil</a>
+        </div>
+      <% }) %>
+    </div>
+    <div class="text-center mt-2">
+      <a href="/coaches" class="btn btn-primary">Ver Todos los Coaches <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- Recursos -->
+<section id="recursos" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Recursos</span>
+      <h2>Aprende y crece con nuestros recursos</h2>
+    </div>
+    <div class="grid-3">
+      <div class="resource-card">
+        <div class="resource-icon"><i class="fas fa-book-open"></i></div>
+        <h3>Artículos y Guías</h3>
+        <p>Contenido escrito por nuestros coaches expertos sobre desarrollo personal, liderazgo, bienestar y más.</p>
+        <a href="/resources" class="link">Explorar Artículos <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon"><i class="fas fa-video"></i></div>
+        <h3>Webinars y Talleres</h3>
+        <p>Sesiones en vivo y grabadas sobre temas de coaching, crecimiento personal y desarrollo profesional.</p>
+        <a href="/resources" class="link">Ver Webinars <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon"><i class="fas fa-tools"></i></div>
+        <h3>Herramientas GROW</h3>
+        <p>Plantillas, worksheets y herramientas prácticas basadas en el método GROW para tu proceso de coaching.</p>
+        <a href="/resources" class="link">Descargar Herramientas <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonios -->
+<section id="testimonios" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Testimonios</span>
+      <h2>Lo que dicen nuestros coachees</h2>
+    </div>
+    <div class="grid-3">
+      <% testimonios.forEach(t => { %>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">
+            <% for (let i = 0; i < t.calificacion; i++) { %>
+              <i class="fas fa-star"></i>
+            <% } %>
+          </div>
+          <p class="testimonial-text">"<%= t.contenido %>"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar"><i class="fas fa-user-circle"></i></div>
+            <div>
+              <strong><%= t.coachee_nombre %> <%= t.coachee_apellido %></strong>
+              <span>Coach: <%= t.coach_nombre %> <%= t.coach_apellido %> - <%= t.especialidad %></span>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- Contacto -->
+<section id="contacto" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Contacto</span>
+      <h2>¿Listo para dar el siguiente paso?</h2>
+      <p>Contáctanos y te ayudaremos a encontrar el coach perfecto para ti</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <div>
+            <h4>Email</h4>
+            <p>info@vamoarriba.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <div>
+            <h4>Teléfono</h4>
+            <p>+598 99 000 000</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <h4>Ubicación</h4>
+            <p>Montevideo, Uruguay</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-clock"></i>
+          <div>
+            <h4>Horario</h4>
+            <p>Lun - Vie: 9:00 - 18:00</p>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('¡Mensaje enviado! Te contactaremos pronto.');">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="tu@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Asunto</label>
+          <select>
+            <option>Quiero encontrar un coach</option>
+            <option>Quiero ser coach en la plataforma</option>
+            <option>Información sobre servicios</option>
+            <option>Coaching empresarial</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensaje</label>
+          <textarea rows="5" placeholder="Cuéntanos cómo podemos ayudarte..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Enviar Mensaje <i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container text-center">
+    <h2>¿Listo para transformar tu vida?</h2>
+    <p>Únete a VamoArriba y comienza tu viaje de coaching hoy mismo</p>
+    <div class="hero-buttons">
+      <a href="/register" class="btn btn-white btn-lg">Crear Cuenta Gratis <i class="fas fa-arrow-right"></i></a>
+      <a href="/coaches" class="btn btn-outline-white btn-lg">Explorar Coaches</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

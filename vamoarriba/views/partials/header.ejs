@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' | ' : '' %>VamoArriba - Red Social de Coaching</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <i class="fas fa-rocket"></i>
+        <span>Vamo<strong>Arriba</strong></span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Menú">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <% if (user) { %>
+          <li><a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>"><i class="fas fa-home"></i> Inicio</a></li>
+          <li><a href="/coaches" class="<%= currentPath === '/coaches' ? 'active' : '' %>"><i class="fas fa-user-tie"></i> Coaches</a></li>
+          <li><a href="/goals" class="<%= currentPath === '/goals' ? 'active' : '' %>"><i class="fas fa-bullseye"></i> Metas</a></li>
+          <li><a href="/sessions" class="<%= currentPath === '/sessions' ? 'active' : '' %>"><i class="fas fa-calendar"></i> Sesiones</a></li>
+          <li><a href="/messages" class="<%= currentPath.startsWith('/messages') ? 'active' : '' %>">
+            <i class="fas fa-envelope"></i> Mensajes
+            <% if (unreadMessages > 0) { %><span class="badge"><%= unreadMessages %></span><% } %>
+          </a></li>
+          <li><a href="/resources" class="<%= currentPath === '/resources' ? 'active' : '' %>"><i class="fas fa-book"></i> Recursos</a></li>
+          <li class="nav-dropdown">
+            <a href="#" class="dropdown-toggle">
+              <i class="fas fa-user-circle"></i> <%= user.nombre %>
+              <i class="fas fa-chevron-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/profile"><i class="fas fa-user"></i> Mi Perfil</a></li>
+              <li><a href="/profile/edit/me"><i class="fas fa-cog"></i> Editar Perfil</a></li>
+              <% if (user.rol === 'admin') { %>
+                <li><a href="/dashboard"><i class="fas fa-shield-alt"></i> Admin</a></li>
+              <% } %>
+              <li class="divider"></li>
+              <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li><a href="/#nosotros">Nosotros</a></li>
+          <li><a href="/#servicios">Servicios</a></li>
+          <li><a href="/coaches">Coaches</a></li>
+          <li><a href="/#recursos">Recursos</a></li>
+          <li><a href="/#testimonios">Testimonios</a></li>
+          <li><a href="/#contacto">Contacto</a></li>
+          <li><a href="/login" class="btn-nav">Iniciar Sesión</a></li>
+          <li><a href="/register" class="btn-nav btn-nav-primary">Registrarse</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
