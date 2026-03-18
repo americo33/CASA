@@ -46,6 +46,7 @@ app.use('/', require('./routes/coaches'));
 app.use('/', require('./routes/sessions'));
 app.use('/', require('./routes/goals'));
 app.use('/', require('./routes/messages'));
+app.use('/', require('./routes/payments'));
 
 // Landing page
 app.get('/', (req, res) => {

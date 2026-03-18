@@ -1,0 +1,126 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-tags"></i> Planes y Precios</h1>
+    <p>Tu primera sesión es <strong>GRATIS</strong> con cada coach. Luego elige el plan que mejor se adapte a ti.</p>
+  </div>
+</div>
+
+<div class="container section">
+  <!-- Free Session Banner -->
+  <div class="free-session-banner">
+    <div class="free-banner-icon"><i class="fas fa-gift"></i></div>
+    <div class="free-banner-content">
+      <h3>Primera Sesión GRATIS</h3>
+      <p>Conoce a tu coach sin compromiso. Tu primera sesión con cada coach es totalmente gratuita para que puedas evaluar si es el match perfecto para ti.</p>
+    </div>
+    <% if (!user) { %>
+      <a href="/register" class="btn btn-white">Comenzar Gratis</a>
+    <% } %>
+  </div>
+
+  <!-- Pricing Cards -->
+  <div class="pricing-grid">
+    <!-- Individual Session -->
+    <div class="pricing-card">
+      <div class="pricing-header">
+        <span class="pricing-tag">Sesión Individual</span>
+        <div class="pricing-price">
+          <span class="price-currency">USD</span>
+          <span class="price-amount"><%= precioSesion %></span>
+          <span class="price-period">/sesión</span>
+        </div>
+      </div>
+      <ul class="pricing-features">
+        <li><i class="fas fa-check"></i> 1 sesión de 60 minutos</li>
+        <li><i class="fas fa-check"></i> Método GROW personalizado</li>
+        <li><i class="fas fa-check"></i> Notas y seguimiento</li>
+        <li><i class="fas fa-check"></i> Mensajería con tu coach</li>
+        <li><i class="fas fa-check"></i> Acceso a recursos</li>
+      </ul>
+      <% if (user) { %>
+        <a href="/coaches" class="btn btn-outline btn-lg btn-block">Elegir Coach</a>
+      <% } else { %>
+        <a href="/register" class="btn btn-outline btn-lg btn-block">Registrarse</a>
+      <% } %>
+    </div>
+
+    <% paquetes.forEach((p, i) => { %>
+      <div class="pricing-card <%= i === 1 ? 'pricing-popular' : '' %>">
+        <% if (i === 1) { %>
+          <div class="pricing-badge">Más Popular</div>
+        <% } %>
+        <div class="pricing-header">
+          <span class="pricing-tag"><%= p.nombre %></span>
+          <div class="pricing-price">
+            <span class="price-currency">USD</span>
+            <span class="price-amount"><%= p.precio_total %></span>
+            <span class="price-period">/<%= p.semanas %> semanas</span>
+          </div>
+          <div class="pricing-per-session">
+            USD <%= p.precio_por_sesion %>/sesión
+            <% if (p.descuento > 0) { %>
+              <span class="pricing-discount">-<%= p.descuento %>%</span>
+            <% } %>
+          </div>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> <%= p.sesiones %> sesiones de 60 minutos</li>
+          <li><i class="fas fa-check"></i> Programa de <%= p.semanas %> semanas</li>
+          <li><i class="fas fa-check"></i> Método GROW completo</li>
+          <li><i class="fas fa-check"></i> Seguimiento semanal</li>
+          <li><i class="fas fa-check"></i> Mensajería ilimitada con tu coach</li>
+          <li><i class="fas fa-check"></i> Acceso completo a recursos</li>
+          <% if (p.semanas >= 9) { %>
+            <li><i class="fas fa-check"></i> Plan de acción personalizado</li>
+          <% } %>
+          <% if (p.semanas >= 12) { %>
+            <li><i class="fas fa-check"></i> Sesión de cierre y evaluación</li>
+            <li><i class="fas fa-check"></i> Certificado de completitud</li>
+          <% } %>
+        </ul>
+        <% if (user) { %>
+          <a href="/coaches" class="btn btn-primary btn-lg btn-block">Elegir Coach</a>
+        <% } else { %>
+          <a href="/register" class="btn btn-primary btn-lg btn-block">Registrarse</a>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="pricing-faq">
+    <div class="section-header">
+      <h2>Preguntas Frecuentes</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> ¿La primera sesión es realmente gratis?</h4>
+        <p>Sí, tu primera sesión con cada coach es 100% gratuita y sin compromiso. Es una oportunidad para conocer al coach y ver si hay conexión.</p>
+      </div>
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> ¿Qué métodos de pago aceptan?</h4>
+        <p>Aceptamos todas las tarjetas de crédito y débito (Visa, Mastercard, American Express) a través de Stripe, la plataforma de pago más segura del mundo.</p>
+      </div>
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> ¿Puedo cambiar de coach?</h4>
+        <p>Sí, puedes cambiar de coach en cualquier momento. Las sesiones compradas son transferibles a otro coach si lo necesitas.</p>
+      </div>
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> ¿Cuánto dura cada sesión?</h4>
+        <p>Cada sesión tiene una duración de 60 minutos. Se realizan de forma virtual a través de la plataforma.</p>
+      </div>
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> ¿Tienen política de reembolso?</h4>
+        <p>Sí, si no estás satisfecho con tu experiencia, puedes solicitar un reembolso dentro de los primeros 7 días de tu compra.</p>
+      </div>
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> ¿Qué paquete me recomiendan?</h4>
+        <p>Para cambios significativos recomendamos el paquete de 9 semanas. Es el más popular y ofrece el mejor balance entre resultados y precio.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

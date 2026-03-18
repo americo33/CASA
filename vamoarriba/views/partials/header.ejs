@@ -31,6 +31,10 @@
             <% if (unreadMessages > 0) { %><span class="badge"><%= unreadMessages %></span><% } %>
           </a></li>
           <li><a href="/resources" class="<%= currentPath === '/resources' ? 'active' : '' %>"><i class="fas fa-book"></i> Recursos</a></li>
+          <li><a href="/pricing" class="<%= currentPath === '/pricing' ? 'active' : '' %>"><i class="fas fa-tags"></i> Precios</a></li>
+          <% if (user.rol === 'coachee') { %>
+            <li><a href="/my-payments" class="<%= currentPath === '/my-payments' ? 'active' : '' %>"><i class="fas fa-credit-card"></i> Pagos</a></li>
+          <% } %>
           <li class="nav-dropdown">
             <a href="#" class="dropdown-toggle">
               <i class="fas fa-user-circle"></i> <%= user.nombre %>
@@ -52,6 +56,7 @@
           <li><a href="/coaches">Coaches</a></li>
           <li><a href="/#recursos">Recursos</a></li>
           <li><a href="/#testimonios">Testimonios</a></li>
+          <li><a href="/pricing">Precios</a></li>
           <li><a href="/#contacto">Contacto</a></li>
           <li><a href="/login" class="btn-nav">Iniciar Sesión</a></li>
           <li><a href="/register" class="btn-nav btn-nav-primary">Registrarse</a></li>

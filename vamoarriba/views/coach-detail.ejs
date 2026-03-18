@@ -38,7 +38,8 @@
 
         <% if (user) { %>
           <div class="profile-actions">
-            <a href="/messages/<%= coach.id %>" class="btn btn-primary">Enviar Mensaje</a>
+            <a href="/messages/<%= coach.id %>" class="btn btn-outline">Enviar Mensaje</a>
+            <a href="/checkout/<%= coach.id %>" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Contratar Sesiones</a>
           </div>
         <% } else { %>
           <div class="profile-actions">

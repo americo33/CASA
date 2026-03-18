@@ -1,0 +1,106 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <a href="/coach/<%= coach.id %>" class="back-link"><i class="fas fa-arrow-left"></i> Volver al perfil</a>
+    <h1><i class="fas fa-shopping-cart"></i> Contratar Sesiones</h1>
+    <p>Coach: <strong><%= coach.nombre %> <%= coach.apellido %></strong> - <%= coach.especialidad %></p>
+  </div>
+</div>
+
+<div class="container section">
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <%= error %></div>
+  <% } %>
+
+  <!-- Available Sessions Info -->
+  <div class="checkout-status">
+    <% if (!usedFree) { %>
+      <div class="status-card status-free">
+        <i class="fas fa-gift"></i>
+        <div>
+          <strong>Tu primera sesión es GRATIS</strong>
+          <p>Puedes agendar tu primera sesión con <%= coach.nombre %> sin costo alguno.</p>
+        </div>
+        <a href="/sessions/new" class="btn btn-success">Agendar Gratis <i class="fas fa-arrow-right"></i></a>
+      </div>
+    <% } %>
+    <% if (available > 0) { %>
+      <div class="status-card status-available">
+        <i class="fas fa-ticket-alt"></i>
+        <div>
+          <strong>Tienes <%= available %> sesión(es) disponible(s)</strong>
+          <p>Puedes agendar sesiones con <%= coach.nombre %> sin necesidad de comprar más.</p>
+        </div>
+        <a href="/sessions/new" class="btn btn-primary">Agendar Sesión <i class="fas fa-arrow-right"></i></a>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="checkout-grid">
+    <!-- Individual Session -->
+    <div class="checkout-option">
+      <h3><i class="fas fa-user"></i> Sesión Individual</h3>
+      <div class="checkout-price">USD $<%= precioSesion %></div>
+      <p>Una sesión de 60 minutos con método GROW</p>
+      <form method="POST" action="/checkout/process">
+        <input type="hidden" name="coach_id" value="<%= coach.id %>">
+        <input type="hidden" name="payment_type" value="individual">
+        <button type="submit" class="btn btn-primary btn-block">Comprar Sesión</button>
+      </form>
+    </div>
+
+    <!-- Packages -->
+    <% paquetes.forEach((p, i) => { %>
+      <div class="checkout-option <%= i === 1 ? 'checkout-popular' : '' %>">
+        <% if (i === 1) { %><div class="pricing-badge">Más Popular</div><% } %>
+        <h3><i class="fas fa-box"></i> <%= p.nombre %></h3>
+        <div class="checkout-price">USD $<%= p.precio_total %></div>
+        <div class="checkout-detail">
+          <%= p.sesiones %> sesiones &middot; USD $<%= p.precio_por_sesion %>/sesión
+          <% if (p.descuento > 0) { %>
+            <span class="pricing-discount">-<%= p.descuento %>%</span>
+          <% } %>
+        </div>
+        <p><%= p.descripcion %></p>
+        <form method="POST" action="/checkout/process">
+          <input type="hidden" name="coach_id" value="<%= coach.id %>">
+          <input type="hidden" name="paquete_id" value="<%= p.id %>">
+          <input type="hidden" name="payment_type" value="package">
+          <button type="submit" class="btn btn-primary btn-block">Comprar Paquete</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Payment History -->
+  <% if (pagosAnteriores.length > 0) { %>
+    <div class="card mt-2">
+      <div class="card-header"><h3><i class="fas fa-history"></i> Historial de Pagos con <%= coach.nombre %></h3></div>
+      <table class="payments-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Concepto</th>
+            <th>Monto</th>
+            <th>Sesiones</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pagosAnteriores.forEach(p => { %>
+            <tr>
+              <td><%= p.fecha_pago || p.created_at %></td>
+              <td><%= p.concepto %></td>
+              <td>USD $<%= p.monto %></td>
+              <td><%= p.sesiones_usadas %>/<%= p.sesiones_totales %></td>
+              <td><span class="badge-<%= p.estado %>"><%= p.estado %></span></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

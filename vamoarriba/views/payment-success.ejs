@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<div class="container section">
+  <div class="payment-success-card">
+    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+    <h1>Pago Exitoso</h1>
+    <p class="success-message">Tu pago ha sido procesado correctamente</p>
+
+    <div class="success-details">
+      <div class="detail-row">
+        <span>Coach:</span>
+        <strong><%= pago.coach_nombre %> <%= pago.coach_apellido %></strong>
+      </div>
+      <div class="detail-row">
+        <span>Concepto:</span>
+        <strong><%= pago.concepto %></strong>
+      </div>
+      <div class="detail-row">
+        <span>Monto:</span>
+        <strong>USD $<%= pago.monto %></strong>
+      </div>
+      <div class="detail-row">
+        <span>Sesiones disponibles:</span>
+        <strong><%= pago.sesiones_totales - pago.sesiones_usadas %></strong>
+      </div>
+    </div>
+
+    <div class="success-actions">
+      <a href="/sessions/new" class="btn btn-primary btn-lg">Agendar Sesión <i class="fas fa-calendar-plus"></i></a>
+      <a href="/my-payments" class="btn btn-outline btn-lg">Ver Mis Pagos</a>
+      <a href="/dashboard" class="btn btn-outline btn-lg">Ir al Inicio</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -76,6 +76,25 @@ router.post('/sessions/new', isAuthenticated, (req, res) => {
     coacheeId = userId;
   }
 
+  // Check payment/free session for coachees
+  if (rol === 'coachee' && coachId) {
+    const payments = require('./payments');
+    const available = payments.getAvailableSessions(userId, coachId);
+    if (available <= 0) {
+      return res.redirect(`/checkout/${coachId}`);
+    }
+    // Consume a session from the oldest payment
+    const usedFree = payments.hasUsedFreeSession(userId, coachId);
+    if (usedFree) {
+      const pago = db.prepare(
+        "SELECT * FROM pagos WHERE usuario_id = ? AND coach_id = ? AND estado = 'completado' AND sesiones_usadas < sesiones_totales ORDER BY created_at ASC LIMIT 1"
+      ).get(userId, coachId);
+      if (pago) {
+        db.prepare('UPDATE pagos SET sesiones_usadas = sesiones_usadas + 1 WHERE id = ?').run(pago.id);
+      }
+    }
+  }
+
   db.prepare(`
     INSERT INTO sesiones (meta_id, coach_id, coachee_id, titulo, fecha, duracion, estado)
     VALUES (?, ?, ?, ?, ?, ?, 'programada')

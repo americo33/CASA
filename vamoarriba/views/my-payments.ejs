@@ -1,0 +1,79 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-credit-card"></i> Mis Pagos</h1>
+    <p>Historial de pagos y sesiones disponibles</p>
+  </div>
+</div>
+
+<div class="container section">
+  <% if (pagos.length === 0) { %>
+    <div class="text-center p-2">
+      <i class="fas fa-receipt" style="font-size:3rem;color:var(--indigo-300)"></i>
+      <h3>No tienes pagos registrados</h3>
+      <p>Tu primera sesión con cada coach es gratis</p>
+      <a href="/coaches" class="btn btn-primary mt-1">Explorar Coaches</a>
+    </div>
+  <% } else { %>
+    <!-- Summary Cards -->
+    <div class="payment-summary">
+      <div class="summary-card">
+        <i class="fas fa-money-bill-wave"></i>
+        <div>
+          <strong>Total Invertido</strong>
+          <span>USD $<%= pagos.filter(p => p.estado === 'completado').reduce((sum, p) => sum + p.monto, 0) %></span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <i class="fas fa-ticket-alt"></i>
+        <div>
+          <strong>Sesiones Disponibles</strong>
+          <span><%= pagos.filter(p => p.estado === 'completado').reduce((sum, p) => sum + (p.sesiones_totales - p.sesiones_usadas), 0) %></span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <i class="fas fa-calendar-check"></i>
+        <div>
+          <strong>Sesiones Usadas</strong>
+          <span><%= pagos.filter(p => p.estado === 'completado').reduce((sum, p) => sum + p.sesiones_usadas, 0) %></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payments Table -->
+    <div class="card">
+      <table class="payments-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Coach</th>
+            <th>Concepto</th>
+            <th>Monto</th>
+            <th>Sesiones</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pagos.forEach(p => { %>
+            <tr>
+              <td><%= p.fecha_pago ? new Date(p.fecha_pago).toLocaleDateString('es') : new Date(p.created_at).toLocaleDateString('es') %></td>
+              <td><%= p.coach_nombre %> <%= p.coach_apellido %><br><small><%= p.coach_especialidad %></small></td>
+              <td><%= p.paquete_nombre || p.concepto %></td>
+              <td><strong>USD $<%= p.monto %></strong></td>
+              <td>
+                <span class="sessions-count"><%= p.sesiones_usadas %>/<%= p.sesiones_totales %></span>
+                <div class="progress-bar progress-sm">
+                  <div class="progress-fill" style="width:<%= Math.round((p.sesiones_usadas / p.sesiones_totales) * 100) %>%"></div>
+                </div>
+              </td>
+              <td><span class="badge-<%= p.estado %>"><%= p.estado === 'completado' ? 'Pagado' : p.estado %></span></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

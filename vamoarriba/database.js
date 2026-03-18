@@ -258,6 +258,42 @@ async function init() {
       FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )
   `);
+  wrapper.exec(`
+    CREATE TABLE IF NOT EXISTS paquetes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nombre VARCHAR(100) NOT NULL,
+      descripcion TEXT,
+      semanas INTEGER NOT NULL,
+      sesiones INTEGER NOT NULL,
+      precio_total DECIMAL(10,2) NOT NULL,
+      precio_por_sesion DECIMAL(10,2) NOT NULL,
+      descuento INTEGER DEFAULT 0,
+      activo INTEGER DEFAULT 1,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+  wrapper.exec(`
+    CREATE TABLE IF NOT EXISTS pagos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      usuario_id INTEGER NOT NULL,
+      coach_id INTEGER NOT NULL,
+      paquete_id INTEGER DEFAULT NULL,
+      stripe_payment_id VARCHAR(255) DEFAULT NULL,
+      stripe_session_id VARCHAR(255) DEFAULT NULL,
+      concepto VARCHAR(255) NOT NULL,
+      monto DECIMAL(10,2) NOT NULL,
+      moneda VARCHAR(10) DEFAULT 'usd',
+      estado VARCHAR(20) DEFAULT 'pendiente',
+      metodo_pago VARCHAR(50) DEFAULT NULL,
+      sesiones_totales INTEGER DEFAULT 1,
+      sesiones_usadas INTEGER DEFAULT 0,
+      fecha_pago DATETIME DEFAULT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+      FOREIGN KEY (coach_id) REFERENCES usuarios(id),
+      FOREIGN KEY (paquete_id) REFERENCES paquetes(id)
+    )
+  `);
 
   return db;
 }
