@@ -500,7 +500,7 @@ async function seed() {
   // INSERT DEMO PAYMENTS
   // =====================
   const insertPago = db.prepare(`
-    INSERT INTO pagos (usuario_id, coach_id, paquete_id, stripe_payment_id, concepto, monto, estado, sesiones_totales, sesiones_usadas, metodo_pago, fecha_pago)
+    INSERT INTO pagos (usuario_id, coach_id, paquete_id, mp_payment_id, concepto, monto, estado, sesiones_totales, sesiones_usadas, metodo_pago, fecha_pago)
     VALUES (?, ?, ?, ?, ?, ?, 'completado', ?, ?, 'demo', ?)
   `);
 

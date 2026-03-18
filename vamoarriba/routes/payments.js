@@ -55,7 +55,6 @@ router.get('/checkout/:coachId', isAuthenticated, (req, res) => {
   const usedFree = hasUsedFreeSession(req.session.userId, coachId);
   const available = getAvailableSessions(req.session.userId, coachId);
 
-  // Get user's payment history with this coach
   const pagosAnteriores = db.prepare(
     "SELECT * FROM pagos WHERE usuario_id = ? AND coach_id = ? ORDER BY created_at DESC"
   ).all(req.session.userId, coachId);
@@ -67,7 +66,7 @@ router.get('/checkout/:coachId', isAuthenticated, (req, res) => {
   });
 });
 
-// Process payment (Stripe Checkout session)
+// Process payment (MercadoPago Checkout)
 router.post('/checkout/process', isAuthenticated, (req, res) => {
   const { coach_id, paquete_id, payment_type } = req.body;
   const userId = req.session.userId;
@@ -90,48 +89,56 @@ router.post('/checkout/process', isAuthenticated, (req, res) => {
     sesionesTotales = paquete.sesiones;
   }
 
-  // If Stripe is configured, create checkout session
-  if (process.env.STRIPE_SECRET_KEY) {
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+  // If MercadoPago is configured, create preference
+  if (process.env.MP_ACCESS_TOKEN) {
+    const { MercadoPagoConfig, Preference } = require('mercadopago');
+    const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+    const preference = new Preference(mpClient);
     const baseUrl = `${req.protocol}://${req.get('host')}`;
 
-    stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{
-        price_data: {
-          currency: 'usd',
-          product_data: { name: concepto, description: `VamoArriba Coaching - ${sesionesTotales} sesión(es)` },
-          unit_amount: Math.round(monto * 100),
+    preference.create({
+      body: {
+        items: [{
+          title: concepto,
+          description: `VamoArriba Coaching - ${sesionesTotales} sesión(es)`,
+          quantity: 1,
+          currency_id: 'USD',
+          unit_price: monto,
+        }],
+        back_urls: {
+          success: `${baseUrl}/payment/success`,
+          failure: `${baseUrl}/checkout/${coachId}`,
+          pending: `${baseUrl}/payment/success`,
         },
-        quantity: 1,
-      }],
-      mode: 'payment',
-      success_url: `${baseUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/checkout/${coachId}`,
-      metadata: { userId: userId.toString(), coachId: coachId.toString(), sesionesTotales: sesionesTotales.toString(), paqueteId: (paquete_id || '').toString() },
-    }).then(session => {
+        auto_return: 'approved',
+        external_reference: JSON.stringify({ userId, coachId, sesionesTotales, paqueteId: paquete_id || null }),
+        notification_url: `${baseUrl}/webhook/mercadopago`,
+      }
+    }).then(result => {
       // Save pending payment
       db.prepare(`
-        INSERT INTO pagos (usuario_id, coach_id, paquete_id, stripe_session_id, concepto, monto, estado, sesiones_totales)
+        INSERT INTO pagos (usuario_id, coach_id, paquete_id, mp_preference_id, concepto, monto, estado, sesiones_totales)
         VALUES (?, ?, ?, ?, ?, ?, 'pendiente', ?)
-      `).run(userId, coachId, paquete_id || null, session.id, concepto, monto, sesionesTotales);
+      `).run(userId, coachId, paquete_id || null, result.id, concepto, monto, sesionesTotales);
 
-      res.redirect(session.url);
+      // Redirect to MercadoPago checkout
+      const mpUrl = process.env.MP_SANDBOX === 'true' ? result.sandbox_init_point : result.init_point;
+      res.redirect(mpUrl);
     }).catch(err => {
-      console.error('Stripe error:', err);
+      console.error('MercadoPago error:', err);
       res.render('checkout', {
         coach, paquetes: db.prepare('SELECT * FROM paquetes WHERE activo = 1 ORDER BY semanas ASC').all(),
         usedFree: hasUsedFreeSession(userId, coachId),
         available: getAvailableSessions(userId, coachId),
         precioSesion: PRECIO_SESION,
         pagosAnteriores: db.prepare("SELECT * FROM pagos WHERE usuario_id = ? AND coach_id = ? ORDER BY created_at DESC").all(userId, coachId),
-        error: 'Error al procesar el pago. Intenta de nuevo.'
+        error: 'Error al procesar el pago con MercadoPago. Intenta de nuevo.'
       });
     });
   } else {
     // Demo mode: simulate successful payment
     const result = db.prepare(`
-      INSERT INTO pagos (usuario_id, coach_id, paquete_id, stripe_payment_id, concepto, monto, estado, sesiones_totales, metodo_pago, fecha_pago)
+      INSERT INTO pagos (usuario_id, coach_id, paquete_id, mp_payment_id, concepto, monto, estado, sesiones_totales, metodo_pago, fecha_pago)
       VALUES (?, ?, ?, ?, ?, ?, 'completado', ?, 'demo', CURRENT_TIMESTAMP)
     `).run(userId, coachId, paquete_id || null, 'demo_' + Date.now(), concepto, monto, sesionesTotales);
 
@@ -141,32 +148,39 @@ router.post('/checkout/process', isAuthenticated, (req, res) => {
 
 // Payment success page
 router.get('/payment/success', isAuthenticated, (req, res) => {
-  const { session_id, demo, payment_id } = req.query;
+  const { payment_id: mpPaymentId, status, external_reference, demo, payment_id } = req.query;
   let pago;
 
   if (demo && payment_id) {
+    // Demo mode
     pago = db.prepare('SELECT p.*, u.nombre as coach_nombre, u.apellido as coach_apellido FROM pagos p JOIN usuarios u ON p.coach_id = u.id WHERE p.id = ? AND p.usuario_id = ?')
       .get(parseInt(payment_id), req.session.userId);
-  } else if (session_id) {
-    // Confirm Stripe payment
-    pago = db.prepare('SELECT p.*, u.nombre as coach_nombre, u.apellido as coach_apellido FROM pagos p JOIN usuarios u ON p.coach_id = u.id WHERE p.stripe_session_id = ? AND p.usuario_id = ?')
-      .get(session_id, req.session.userId);
+  } else if (status === 'approved' && external_reference) {
+    // MercadoPago approved payment
+    let ref;
+    try { ref = JSON.parse(external_reference); } catch (e) { return res.redirect('/dashboard'); }
 
-    if (pago && pago.estado === 'pendiente') {
-      // Mark as completed
-      db.prepare("UPDATE pagos SET estado = 'completado', fecha_pago = CURRENT_TIMESTAMP WHERE id = ?").run(pago.id);
+    // Find the pending payment for this user/coach
+    pago = db.prepare(
+      "SELECT p.*, u.nombre as coach_nombre, u.apellido as coach_apellido FROM pagos p JOIN usuarios u ON p.coach_id = u.id WHERE p.usuario_id = ? AND p.coach_id = ? AND p.estado = 'pendiente' ORDER BY p.created_at DESC LIMIT 1"
+    ).get(ref.userId, ref.coachId);
+
+    if (pago) {
+      db.prepare("UPDATE pagos SET estado = 'completado', mp_payment_id = ?, metodo_pago = 'mercadopago', fecha_pago = CURRENT_TIMESTAMP WHERE id = ?")
+        .run(mpPaymentId || '', pago.id);
       pago.estado = 'completado';
+    }
+  } else if (status === 'pending' && external_reference) {
+    // MercadoPago pending payment
+    let ref;
+    try { ref = JSON.parse(external_reference); } catch (e) { return res.redirect('/dashboard'); }
 
-      // Confirm with Stripe
-      if (process.env.STRIPE_SECRET_KEY) {
-        const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-        stripe.checkout.sessions.retrieve(session_id).then(session => {
-          if (session.payment_status === 'paid') {
-            db.prepare("UPDATE pagos SET stripe_payment_id = ?, metodo_pago = 'stripe' WHERE id = ?")
-              .run(session.payment_intent, pago.id);
-          }
-        }).catch(() => {});
-      }
+    pago = db.prepare(
+      "SELECT p.*, u.nombre as coach_nombre, u.apellido as coach_apellido FROM pagos p JOIN usuarios u ON p.coach_id = u.id WHERE p.usuario_id = ? AND p.coach_id = ? AND p.estado = 'pendiente' ORDER BY p.created_at DESC LIMIT 1"
+    ).get(ref.userId, ref.coachId);
+
+    if (pago) {
+      db.prepare("UPDATE pagos SET mp_payment_id = ? WHERE id = ?").run(mpPaymentId || '', pago.id);
     }
   }
 
@@ -189,29 +203,34 @@ router.get('/my-payments', isAuthenticated, (req, res) => {
   res.render('my-payments', { pagos });
 });
 
-// Stripe webhook (for production)
-router.post('/webhook/stripe', express.raw({ type: 'application/json' }), (req, res) => {
-  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
-    return res.status(400).send('Stripe not configured');
+// MercadoPago webhook (IPN - Instant Payment Notification)
+router.post('/webhook/mercadopago', (req, res) => {
+  if (!process.env.MP_ACCESS_TOKEN) {
+    return res.status(200).send('OK');
   }
 
-  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-  const sig = req.headers['stripe-signature'];
+  const { type, data } = req.body;
 
-  try {
-    const event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  if (type === 'payment' && data && data.id) {
+    const { MercadoPagoConfig, Payment } = require('mercadopago');
+    const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+    const payment = new Payment(mpClient);
 
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object;
-      db.prepare("UPDATE pagos SET estado = 'completado', stripe_payment_id = ?, metodo_pago = 'stripe', fecha_pago = CURRENT_TIMESTAMP WHERE stripe_session_id = ?")
-        .run(session.payment_intent, session.id);
-    }
+    payment.get({ id: data.id }).then(paymentData => {
+      if (paymentData.status === 'approved' && paymentData.external_reference) {
+        let ref;
+        try { ref = JSON.parse(paymentData.external_reference); } catch (e) { return; }
 
-    res.json({ received: true });
-  } catch (err) {
-    console.error('Webhook error:', err.message);
-    res.status(400).send(`Webhook Error: ${err.message}`);
+        db.prepare(
+          "UPDATE pagos SET estado = 'completado', mp_payment_id = ?, metodo_pago = 'mercadopago', fecha_pago = CURRENT_TIMESTAMP WHERE usuario_id = ? AND coach_id = ? AND estado = 'pendiente' ORDER BY created_at DESC LIMIT 1"
+        ).run(String(data.id), ref.userId, ref.coachId);
+      }
+    }).catch(err => {
+      console.error('MercadoPago webhook error:', err.message);
+    });
   }
+
+  res.status(200).send('OK');
 });
 
 // Export helper for session booking
