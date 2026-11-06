@@ -3,3 +3,5 @@ out/
 /reels/
 **/.env
 .instalacion-estado.json
+motor-remotion/props/
+motor-remotion/public/reels/
