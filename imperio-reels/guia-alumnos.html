@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Imperio Reels — Guía de instalación</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm 18mm 14mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; color: #14161c; margin: 0; font-size: 10.8pt; line-height: 1.55; }
+  h1,h2,h3 { line-height: 1.15; margin: 0; }
+  code, pre { font-family: "Cascadia Mono", Consolas, monospace; }
+
+  .cover { height: 245mm; background: #0b0b12; color: #fff; margin: -16mm -14mm 0 -14mm;
+    padding: 36mm 20mm; position: relative; overflow: hidden; page-break-after: always; }
+  .cover::after { content:""; position:absolute; inset:auto -60mm -70mm auto; width: 200mm; height: 200mm;
+    background: radial-gradient(circle, rgba(0,229,255,.30) 0%, rgba(255,45,149,.16) 42%, transparent 68%); }
+  .cover .kicker { font-size: 11pt; letter-spacing: 5px; text-transform: uppercase; color: #00e5ff; font-weight: 700; }
+  .cover h1 { font-size: 46pt; font-weight: 900; margin: 10mm 0 7mm; letter-spacing: -1.5px; }
+  .cover h1 em { font-style: normal; background: linear-gradient(100deg,#00e5ff,#ff2d95);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cover p { font-size: 14pt; color: #b7bcc9; max-width: 132mm; position: relative; z-index: 2; }
+  .cover .badges { position: relative; z-index: 2; margin-top: 15mm; display: flex; gap: 5mm; flex-wrap: wrap; }
+  .cover .badge { border: 1.5px solid #2b2f3d; border-radius: 30px; padding: 3mm 6mm; font-size: 9.5pt; color: #dfe3ec; }
+  .cover .meta { position: absolute; bottom: 26mm; left: 20mm; font-size: 10pt; color: #6f7686; }
+
+  h2.sec { font-size: 21pt; font-weight: 900; margin: 0 0 4mm; letter-spacing: -.5px; }
+  h3 { font-size: 12pt; font-weight: 800; margin: 6mm 0 2.5mm; }
+  p { margin: 0 0 3.5mm; }
+  ol, ul { margin: 0 0 3.5mm; padding-left: 6mm; }
+  li { margin-bottom: 2mm; }
+
+  .paso { page-break-inside: avoid; border: 2px solid #e2e6ee; border-radius: 5mm; padding: 7mm; margin: 0 0 8mm; }
+  .paso-head { display: flex; align-items: center; gap: 5mm; margin-bottom: 5mm; }
+  .num { flex: none; width: 15mm; height: 15mm; border-radius: 50%;
+    background: linear-gradient(135deg,#00e5ff,#0090ff); color: #04121a;
+    display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20pt; }
+  .paso-head h2 { font-size: 19pt; font-weight: 900; letter-spacing: -.5px; }
+
+  .accion { background: #0b0b12; color: #fff; border-radius: 4mm; padding: 8mm; text-align: center; margin: 5mm 0; }
+  .accion .label { font-size: 9.5pt; letter-spacing: 3px; color: #00e5ff; text-transform: uppercase; font-weight: 700; margin-bottom: 4mm; }
+  .accion .cosa { font-family: "Cascadia Mono", Consolas, monospace; font-size: 21pt; font-weight: 700; }
+  .accion .sub { font-size: 9.5pt; color: #8b93a5; margin-top: 4mm; }
+
+  pre { background: #12141c; color: #e8ebf2; border-radius: 3mm; padding: 4mm 5mm; font-size: 9.6pt;
+    white-space: pre-wrap; margin: 3mm 0; border-left: 3px solid #00e5ff; }
+  code { background: #eef1f6; padding: .5mm 1.5mm; border-radius: 1mm; font-size: 9.6pt; }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .nota, .ojo, .tip { border-radius: 3mm; padding: 4.5mm 5mm; margin: 4mm 0; font-size: 10.2pt; page-break-inside: avoid; }
+  .nota { background: #eef6ff; border-left: 4px solid #2b7fff; }
+  .ojo  { background: #fff4e8; border-left: 4px solid #ff8a1f; }
+  .tip  { background: #eefbf2; border-left: 4px solid #14b866; }
+  .nota > strong:first-child, .ojo > strong:first-child, .tip > strong:first-child {
+    display: block; margin-bottom: 1.5mm; font-size: 10.6pt; }
+
+  figure { margin: 5mm 0; page-break-inside: avoid; }
+  figcaption { font-size: 8.8pt; color: #6b7280; margin-top: 2mm; text-align: center; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.8pt; margin: 3mm 0; }
+  th { background: #12141c; color: #fff; text-align: left; padding: 2.5mm 3mm; font-weight: 700; }
+  td { border-bottom: 1px solid #e2e6ee; padding: 2.5mm 3mm; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8f9fc; }
+
+  .break { page-break-before: always; }
+  .check { list-style: none; padding-left: 0; }
+  .check li { padding-left: 9mm; position: relative; margin-bottom: 3.5mm; }
+  .check li::before { content: ""; position: absolute; left: 0; top: .6mm;
+    width: 5.5mm; height: 5.5mm; border: 2px solid #9aa3b2; border-radius: 1.5mm; }
+  footer { margin-top: 12mm; padding-top: 4mm; border-top: 1px solid #e2e6ee; font-size: 8.8pt; color: #6b7280; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="kicker">Guía de instalación</div>
+  <h1>Kit&nbsp;Reels<br><em>en 2 pasos</em></h1>
+  <p>Un doble click y una frase. El resto lo hace Claude solo, guiándote de a un paso por vez.</p>
+  <div class="badges">
+    <span class="badge">⏱ 20 minutos</span>
+    <span class="badge">💻 Windows 10 / 11</span>
+    <span class="badge">💵 USD 6 por mes</span>
+    <span class="badge">🚫 Sin escribir código</span>
+  </div>
+  <div class="meta">Guía para alumnos · Imperio Reels</div>
+</section>
+
+<!-- ===== CONTEXTO ===== -->
+<h2 class="sec">Qué vas a instalar</h2>
+<p>Cinco piezas. No necesitás entender cómo funcionan, pero saber para qué sirve cada una te va a evitar confusión.</p>
+
+<figure>
+<svg viewBox="0 0 720 290" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+  <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+    <path d="M0 0 L9 4.5 L0 9 z" fill="#8b93a5"/></marker></defs>
+  <rect x="8" y="8" width="704" height="274" rx="14" fill="#f7f8fb" stroke="#e2e6ee"/>
+  <rect x="40" y="44" width="150" height="70" rx="10" fill="#12141c"/>
+  <text x="115" y="74" fill="#00e5ff" font-size="15" font-weight="800" text-anchor="middle">TU GUION</text>
+  <text x="115" y="95" fill="#9aa3b2" font-size="11.5" text-anchor="middle">lo que se va a decir</text>
+  <rect x="40" y="172" width="150" height="70" rx="10" fill="#12141c"/>
+  <text x="115" y="202" fill="#00e5ff" font-size="15" font-weight="800" text-anchor="middle">TUS VIDEOS</text>
+  <text x="115" y="223" fill="#9aa3b2" font-size="11.5" text-anchor="middle">filmados con el celular</text>
+  <rect x="268" y="44" width="164" height="70" rx="10" fill="#fff" stroke="#00b4d8" stroke-width="2"/>
+  <text x="350" y="70" fill="#0b7a91" font-size="14" font-weight="800" text-anchor="middle">ElevenLabs</text>
+  <text x="350" y="89" fill="#5b6472" font-size="11" text-anchor="middle">pone la voz y marca</text>
+  <text x="350" y="105" fill="#5b6472" font-size="11" text-anchor="middle">los tiempos</text>
+  <rect x="268" y="172" width="164" height="70" rx="10" fill="#fff" stroke="#8b93a5" stroke-width="2"/>
+  <text x="350" y="200" fill="#3b4250" font-size="14" font-weight="800" text-anchor="middle">ffmpeg</text>
+  <text x="350" y="221" fill="#5b6472" font-size="11" text-anchor="middle">corta y prepara clips</text>
+  <rect x="506" y="102" width="176" height="90" rx="10" fill="#12141c"/>
+  <text x="594" y="134" fill="#ff2d95" font-size="15" font-weight="800" text-anchor="middle">EL MOTOR</text>
+  <text x="594" y="154" fill="#dfe3ec" font-size="11" text-anchor="middle">arma el video final:</text>
+  <text x="594" y="172" fill="#9aa3b2" font-size="10.5" text-anchor="middle">subtítulos · zooms · música</text>
+  <path d="M190 79 H262" stroke="#8b93a5" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <path d="M190 207 H262" stroke="#8b93a5" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <path d="M432 79 H470 Q500 79 500 115 V142" stroke="#8b93a5" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <path d="M432 207 H470 Q500 207 500 171 V154" stroke="#8b93a5" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <text x="360" y="268" fill="#6b7280" font-size="11.5" text-anchor="middle">Node hace funcionar el motor · Claude da las órdenes a todo</text>
+</svg>
+</figure>
+
+<table>
+  <tr><th style="width:32mm">Pieza</th><th>Para qué sirve</th><th style="width:24mm">Costo</th></tr>
+  <tr><td><strong>Node</strong></td><td>El motor que hace funcionar el programa que arma los videos.</td><td>Gratis</td></tr>
+  <tr><td><strong>ffmpeg</strong></td><td>La navaja suiza del video: corta, pega, convierte, mide.</td><td>Gratis</td></tr>
+  <tr><td><strong>El motor</strong></td><td>Dibuja los subtítulos, los zooms y la música sobre tu video.</td><td>Gratis</td></tr>
+  <tr><td><strong>Las skills</strong></td><td>El manual para que Claude sepa armar reels.</td><td>Gratis</td></tr>
+  <tr><td><strong>ElevenLabs</strong></td><td>Convierte tu guion en voz y marca cada palabra.</td><td><strong>USD 6/mes</strong></td></tr>
+</table>
+
+<div class="nota">
+  <strong>El único gasto real son 6 dólares por mes.</strong>
+  Todo lo demás es gratis, y con ese plan te alcanza para más de 20 anuncios mensuales.
+</div>
+
+<!-- ===== PASO 1 ===== -->
+<div class="break">
+<div class="paso">
+  <div class="paso-head"><div class="num">1</div><h2>Doble click y listo</h2></div>
+
+  <p>Abrí la carpeta del kit y buscá este archivo:</p>
+
+  <div class="accion">
+    <div class="label">Hacé doble click en</div>
+    <div class="cosa">INSTALAR-SKILL.bat</div>
+    <div class="sub">está en la carpeta principal del kit</div>
+  </div>
+
+  <p>Se abre una ventanita negra, copia lo necesario y te dice <strong>[OK] Skill instalada correctamente</strong>. Tarda dos segundos.</p>
+
+  <div class="tip">
+    <strong>No toca nada más de tu computadora</strong>
+    Solo copia unos archivos de texto a la carpeta donde Claude los busca. No instala programas ni cambia configuraciones.
+  </div>
+
+  <div class="ojo">
+    <strong>Si Windows te muestra un cartel azul de "Windows protegió tu PC"</strong>
+    Es porque el archivo viene de internet. Hacé click en <strong>Más información</strong> y después en <strong>Ejecutar de todas formas</strong>.
+  </div>
+
+  <div class="ojo">
+    <strong>Si dice que no encuentra la carpeta "skills"</strong>
+    El archivo se movió de lugar. Tiene que quedar <em>dentro</em> de la carpeta del kit, al lado de la carpeta <code>skills</code>. Volvelo a su sitio y probá de nuevo.
+  </div>
+
+  <h3>Ahora cerrá Claude — pero de verdad</h3>
+  <p>Claude lee las skills una sola vez, cuando arranca. Como recién las copiamos, todavía no las ve.</p>
+
+  <div class="ojo">
+    <strong>Cerrar la ventana NO alcanza</strong>
+    La app queda viva en segundo plano. Hacé esto:
+    <ol style="margin:2mm 0 0">
+      <li>Abajo a la derecha, al lado del reloj, click en la <strong>flechita ˄</strong>.</li>
+      <li>Click derecho en el ícono de Claude → <strong>Quit / Salir</strong>.</li>
+      <li>Si no aparece ahí: <code>Ctrl + Shift + Esc</code> → buscá <strong>Claude</strong> → click derecho → <strong>Finalizar tarea</strong>.</li>
+    </ol>
+    Después abrilo de nuevo desde el menú Inicio.
+  </div>
+</div>
+
+<!-- ===== PASO 2 ===== -->
+<div class="paso">
+  <div class="paso-head"><div class="num">2</div><h2>Pedile a Claude que instale</h2></div>
+
+  <p>Con Claude abierto de nuevo, escribí en el chat:</p>
+
+  <div class="accion">
+    <div class="label">Escribí en el chat</div>
+    <div class="cosa">/imperiokit</div>
+    <div class="sub">y apretá Enter</div>
+  </div>
+
+  <p><strong>Desde acá no tenés que hacer nada más por tu cuenta.</strong> Claude te va llevando de a un paso por vez, te avisa en cuál vas y te pide solo lo que él no puede hacer.</p>
+</div>
+</div>
+
+<!-- ===== QUÉ VA A PASAR ===== -->
+<div class="break">
+  <h2 class="sec">Qué va a pasar de acá en más</h2>
+  <p>Para que no te agarre desprevenida, esto es lo que Claude va a ir haciendo y lo que te va a pedir.</p>
+
+  <table>
+    <tr><th style="width:70mm">Lo hace Claude 🤖</th><th>Te pide a vos 🙋</th></tr>
+    <tr><td>Buscar dónde guardaste el kit</td><td>Nada</td></tr>
+    <tr><td>Instalar Node y ffmpeg</td><td>Click en <strong>Sí</strong> en el cartel de Windows</td></tr>
+    <tr><td>Bajar las piezas del motor</td><td>Nada — tarda unos minutos</td></tr>
+    <tr><td>—</td><td>Crear tu cuenta de <strong>ElevenLabs</strong> y elegir el plan</td></tr>
+    <tr><td>—</td><td>Crear la <strong>clave</strong> y copiarla</td></tr>
+    <tr><td>Crear el archivo de la clave y abrírtelo</td><td>Pegarla y guardar con Ctrl+S</td></tr>
+    <tr><td>Comprobar que la clave funcione</td><td>Nada</td></tr>
+    <tr><td>Hacer una prueba real de video</td><td>Nada</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>Nunca te va a pedir que escribas una ruta</strong>
+    Claude busca la carpeta del kit solo. Si no la encuentra, te pide que la arrastres al chat. Nada de escribir <code>C:\Users\...</code> a mano.
+  </div>
+
+  <div class="nota">
+    <strong>Si se corta, no perdés el avance</strong>
+    En un momento hay que reiniciar Claude otra vez. Volvés a escribir <code>/imperiokit</code> y sigue desde donde quedaste.
+  </div>
+
+  <h3>Las dos cosas que solo podés hacer vos</h3>
+
+  <p><strong>1. La cuenta de ElevenLabs.</strong> Elegí el plan <strong>Starter, USD 6 por mes</strong>. El motivo es uno solo: la <em>licencia comercial</em> aparece recién ahí, y vos vas a usar esa voz en anuncios pagos para vender. Con el plan gratis no se puede legalmente. El plan Creator no lo necesitás: lo único que suma es clonar tu propia voz.</p>
+
+  <p><strong>2. La clave (API key).</strong> En ElevenLabs: menú de la izquierda abajo → <strong>Developers</strong> → pestaña <strong>API Keys</strong> → crear una nueva.</p>
+
+  <div class="ojo">
+    <strong>Apagá el interruptor "Restrict Key"</strong>
+    Es el error más común de toda la instalación. Si lo dejás encendido sin habilitar nada, la clave se crea igual pero <em>no puede hacer absolutamente nada</em>, y todo falla con un error que no explica qué pasó.
+    <br><br>
+    Si preferís dejarlo encendido, tenés que poner en <strong>Access</strong> dos filas: <strong>Text to Speech</strong> y <strong>Speech to Text</strong>.
+  </div>
+
+  <div class="ojo">
+    <strong>La clave se muestra una sola vez</strong>
+    Copiala apenas aparezca. Si la perdés no pasa nada: creás otra, es gratis.
+  </div>
+
+  <div class="tip">
+    <strong>Nunca pegues la clave en el chat</strong>
+    Claude te va a crear un archivo y abrírtelo en el Bloc de notas. La clave va ahí adentro, y desde ahí se lee sola sin quedar escrita en la conversación.
+  </div>
+</div>
+
+<!-- ===== PROBLEMAS ===== -->
+<div class="break">
+  <h2 class="sec">Si algo no funciona</h2>
+  <p>Estos son los problemas que aparecen casi siempre. Todos tienen solución rápida.</p>
+
+  <table>
+    <tr><th style="width:54mm">Lo que te pasa</th><th>Por qué</th><th style="width:44mm">Cómo se arregla</th></tr>
+    <tr>
+      <td>El comando <code>/imperiokit</code> no aparece</td>
+      <td>Cerraste la ventana de Claude pero la app siguió viva en segundo plano.</td>
+      <td>Salí desde el ícono al lado del reloj, o desde el Administrador de tareas.</td>
+    </tr>
+    <tr>
+      <td>El <code>.bat</code> dice que no encuentra "skills"</td>
+      <td>El archivo se movió fuera de la carpeta del kit.</td>
+      <td>Volvelo adentro del kit, al lado de la carpeta <code>skills</code>.</td>
+    </tr>
+    <tr>
+      <td>Windows dice "protegió tu PC"</td>
+      <td>El archivo viene de internet.</td>
+      <td>Más información → Ejecutar de todas formas.</td>
+    </tr>
+    <tr>
+      <td>Error <strong>401</strong> con ElevenLabs</td>
+      <td>La clave existe pero no tiene permisos.</td>
+      <td>Creá otra con <em>Restrict Key</em> apagado.</td>
+    </tr>
+    <tr>
+      <td>Una prueba tarda muchísimo la primera vez</td>
+      <td>Se está bajando un Chrome interno de 113 MB.</td>
+      <td>Esperá. Pasa una sola vez.</td>
+    </tr>
+    <tr>
+      <td>Se trabó en algún paso</td>
+      <td>Puede pasar.</td>
+      <td>Escribile a Claude qué te apareció en pantalla. Él lo traduce y lo resuelve.</td>
+    </tr>
+  </table>
+
+  <h2 class="sec" style="margin-top:12mm;">Checklist</h2>
+  <p>Marcá a medida que avanzás.</p>
+
+  <ul class="check">
+    <li><strong>Doble click</strong> en <code>INSTALAR-SKILL.bat</code> — dijo [OK]</li>
+    <li><strong>Claude cerrado de verdad</strong> desde la bandeja, y vuelto a abrir</li>
+    <li><strong>Escribí <code>/imperiokit</code></strong> y arrancó la guía</li>
+    <li><strong>Node y ffmpeg</strong> instalados (Claude te lo confirma)</li>
+    <li><strong>Motor preparado</strong></li>
+    <li><strong>Cuenta de ElevenLabs</strong> con plan Starter</li>
+    <li><strong>Clave creada</strong> con Restrict Key apagado</li>
+    <li><strong>Clave pegada</strong> en el Bloc de notas y guardada</li>
+    <li><strong>Prueba superada</strong> — Claude confirmó que todo anda</li>
+  </ul>
+
+  <div class="tip" style="margin-top:8mm;">
+    <strong>Cuando termines, pedí tu primer reel así</strong>
+    Escribile: <em>"quiero un reel de [tu producto]"</em>. Va a arrancar por el guion, que es <strong>gratis</strong> y no consume créditos. Recién cuando el guion te guste se genera la voz.
+  </div>
+
+  <footer>
+    Guía de instalación del Imperio Reels · Windows 10 y 11 · Dos pasos: un doble click y una frase.
+  </footer>
+</div>
+
+</body>
+</html>
