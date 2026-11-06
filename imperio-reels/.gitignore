@@ -1,5 +1,5 @@
 node_modules/
 out/
-reels/
+/reels/
 **/.env
 .instalacion-estado.json
