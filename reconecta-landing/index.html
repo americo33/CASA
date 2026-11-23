@@ -99,16 +99,64 @@ footer{padding-block:36px;font-size:.85rem;color:var(--muted)}
 .sticky small{color:var(--muted)}
 body{padding-bottom:84px}
 @media (prefers-reduced-motion:no-preference){.btn{transition:filter .2s}}
+
+/* Recursos */
+.nav{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.92rem;font-weight:600}
+.nav a{color:var(--accent);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.res-intro{max-width:40em}
+.form-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.form-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:600;font-size:.95rem}
+.field input[type=text],.field input[type=email],.field textarea{font:inherit;font-size:1rem;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.field textarea{min-height:76px;resize:vertical}
+.areas{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.arow{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:8px 18px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.arow > *{min-width:0}
+.arow .an{font-weight:700}
+.arow .an small{display:block;font-weight:400;color:var(--muted);font-size:.82rem}
+.rg{display:flex;flex-direction:column;gap:2px}
+.rg span{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted)}
+.rg output{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+.rg.want output{color:var(--sun)}
+.rg input{width:100%;accent-color:var(--accent)}
+.rg.want input{accent-color:var(--sun)}
+@media (max-width:640px){.arow{grid-template-columns:1fr 1fr}.arow .an{grid-column:1/-1}}
+.results{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.results > *{min-width:0}
+@media (max-width:700px){.results{grid-template-columns:1fr}}
+.legend{display:flex;gap:16px;font-size:.85rem;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.gaps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.gaps li{display:flex;justify-content:space-between;gap:10px;background:var(--bg);border-radius:10px;padding:10px 12px}
+.gaps b{font-variant-numeric:tabular-nums;color:var(--accent)}
+.badge{display:inline-block;background:var(--sun);color:#1C2A28;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.row-btns{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.note{font-size:.88rem;color:var(--muted)}
+.res-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.res-grid .res:last-child:nth-child(odd){grid-column:1/-1}
+@media (max-width:640px){.res-grid{grid-template-columns:1fr}}
+.res{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;grid-template-columns:120px minmax(0,1fr)}
+.res img{width:120px;height:100%;object-fit:cover;object-position:top;display:block;max-width:none}
+.res div{padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.res h3{font-size:1.08rem}
+.res p{font-size:.92rem;color:var(--muted)}
+.res a.dl{margin-top:auto;font-weight:700;color:var(--accent);text-decoration:none}
+.res a.dl:hover{text-decoration:underline}
+.res .meta{font-size:.78rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 </style>
 
-<div class="preview"><div class="wrap">Vista previa de la landing para <b>www.reconectacontuvida.com</b> · no publicada · los testimonios son de ejemplo</div></div>
+<div class="preview"><div class="wrap">Vista previa de la landing para <b>www.reconectacontuvida.com</b> · no publicada · los testimonios son de ejemplo · el formulario no envía datos</div></div>
 
 <header class="hero">
   <div class="wrap stack" style="gap:20px">
+    <nav class="nav" aria-label="Secciones"><a href="#recursos">Recursos de coaching</a><a href="#incluye">Qué incluye el kit</a><a href="#oferta">Precio</a><a href="#faq">Preguntas</a></nav>
     <span class="eyebrow">Programa guiado de 30 días</span>
     <h1>Vuelve a sentir que tu vida es tuya.</h1>
     <p class="lead">Para mujeres que cuidan de todos y se dejaron para el final. 15 minutos al día, un cuaderno, 60 cartas y un plan semana a semana para bajar el ruido mental, escuchar a tu cuerpo y poner límites sin culpa.</p>
-    <div><a class="btn" href="#oferta">Quiero reconectar · US$17</a></div>
+    <div class="row-btns"><a class="btn" href="#oferta">Quiero reconectar · US$17</a><a class="btn ghost" href="#rueda">Haz tu Rueda de la Vida gratis</a></div>
     <p class="price-line">Valor del kit <s>US$127</s> · hoy <b>US$17</b>, pago único, acceso inmediato</p>
     <div class="trust"><span>Descarga digital al instante</span><span>Garantía de 7 días</span><span>Sin suscripción</span></div>
   </div>
@@ -129,16 +177,54 @@ body{padding-bottom:84px}
   </div>
 </section>
 
-<section id="rueda">
-  <div class="wrap">
-    <span class="eyebrow">Test gratuito · 1 minuto</span>
-    <h2>La Rueda de tu Vida</h2>
-    <p class="muted" style="margin-bottom:22px">Puntúa de 1 a 10 qué tan satisfecha te sientes hoy en cada área. La rueda te muestra dónde te desconectaste primero.</p>
-    <div class="wheel">
-      <div class="sliders" id="sliders"></div>
-      <svg id="chart" viewBox="-150 -150 300 300" role="img" aria-label="Rueda de la vida con tus puntuaciones" style="width:100%;max-width:340px;margin:0 auto;display:block"></svg>
+<section id="recursos">
+  <div class="wrap stack" style="gap:22px">
+    <div class="res-intro stack" style="gap:8px">
+      <span class="eyebrow">Recursos de coaching · gratis</span>
+      <h2 style="margin:0">Herramientas para empezar hoy</h2>
+      <p class="muted">Completa tu Rueda de la Vida aquí mismo y descarga las otras cuatro herramientas en PDF para imprimir.</p>
     </div>
-    <div class="result" id="result" aria-live="polite"></div>
+
+    <form class="form-card" id="rueda" novalidate>
+      <div class="form-head">
+        <div><span class="badge">Herramienta 1 · Formulario</span><h3 style="margin-top:8px;font-size:1.4rem">La Rueda de la Vida</h3></div>
+        <span class="note">10 minutos · 8 áreas</span>
+      </div>
+      <p class="muted">Puntúa del 1 al 10 qué tan satisfecha te sientes <b>hoy</b> en cada área y a qué puntuación <b>quieres llegar</b> en 90 días. 1 es nada satisfecha y 10 es plenamente satisfecha.</p>
+      <div class="field"><label for="rv-nombre">Tu nombre (opcional)</label><input type="text" id="rv-nombre" autocomplete="given-name" placeholder="Ej.: Laura"></div>
+      <div class="areas" id="rv-areas"></div>
+      <div class="row-btns"><button class="btn" type="submit">Ver mi rueda</button><button class="btn ghost" type="button" id="rv-reset">Empezar de nuevo</button></div>
+
+      <div id="rv-out" hidden>
+        <div class="results">
+          <div>
+            <svg id="rv-chart" viewBox="-205 -160 410 320" role="img" aria-label="Tu rueda de la vida: hoy y deseado" style="width:100%;max-width:380px;display:block;margin:0 auto"></svg>
+            <div class="legend" style="justify-content:center"><span><i style="background:var(--accent)"></i>Hoy</span><span><i style="background:var(--sun)"></i>Quiero llegar a</span></div>
+          </div>
+          <div class="stack" style="gap:12px">
+            <h3 id="rv-title">Tu resultado</h3>
+            <p id="rv-summary"></p>
+            <p class="eyebrow" style="margin-top:4px">Tus 3 brechas más grandes</p>
+            <ul class="gaps" id="rv-gaps"></ul>
+            <p class="note" id="rv-tip"></p>
+          </div>
+        </div>
+        <div class="stack" style="gap:14px;margin-top:22px">
+          <div class="field"><label for="rv-accion" id="rv-accion-label">Mi primera acción para esta semana</label><textarea id="rv-accion" placeholder="Algo pequeño y concreto que puedas hacer en los próximos 7 días"></textarea></div>
+          <div class="field"><label for="rv-email">Recibe tu resultado y el kit de 5 herramientas en tu email</label><input type="email" id="rv-email" autocomplete="email" placeholder="tu@email.com"></div>
+          <div class="row-btns"><button class="btn" type="button" id="rv-send">Enviarme mi resultado</button><button class="btn ghost" type="button" id="rv-copy">Copiar mi resultado</button></div>
+          <p class="note" id="rv-msg" aria-live="polite"></p>
+        </div>
+      </div>
+    </form>
+
+    <div class="res-grid">
+      <article class="res"><img src="recursos/01-rueda-de-la-vida.jpg" alt="Portada del PDF Rueda de la Vida"><div><span class="meta">PDF · 7 páginas</span><h3>Rueda de la Vida para imprimir</h3><p>La misma herramienta en papel, con preguntas de coach y seguimiento de 90 días.</p><a class="dl" href="recursos/01-rueda-de-la-vida.pdf" target="_blank" rel="noopener">Descargar PDF ↓</a></div></article>
+      <article class="res"><img src="recursos/02-calendario-atraccion-rpm.jpg" alt="Portada del PDF Calendario de Manifestación"><div><span class="meta">PDF · 7 páginas</span><h3>Calendario de Manifestación</h3><p>Ley de atracción y método RPM: visión, semana RPM, calendario de 30 días y página diaria.</p><a class="dl" href="recursos/02-calendario-atraccion-rpm.pdf" target="_blank" rel="noopener">Descargar PDF ↓</a></div></article>
+      <article class="res"><img src="recursos/03-registro-de-habitos.jpg" alt="Portada del PDF Registro de Hábitos"><div><span class="meta">PDF · 7 páginas</span><h3>Registro de Hábitos</h3><p>Diseño de hábitos, registro mensual, reto de 66 días y revisión semanal.</p><a class="dl" href="recursos/03-registro-de-habitos.pdf" target="_blank" rel="noopener">Descargar PDF ↓</a></div></article>
+      <article class="res"><img src="recursos/04-manejo-del-tiempo.jpg" alt="Portada del PDF Manejo del Tiempo"><div><span class="meta">PDF · 7 páginas</span><h3>Manejo del Tiempo</h3><p>Matriz de Eisenhower, semana por bloques, auditoría de un día y lista de “no hacer”.</p><a class="dl" href="recursos/04-manejo-del-tiempo.pdf" target="_blank" rel="noopener">Descargar PDF ↓</a></div></article>
+      <article class="res"><img src="recursos/05-manejo-de-emociones.jpg" alt="Portada del PDF Manejo de Emociones"><div><span class="meta">PDF · 7 páginas</span><h3>Manejo de Emociones</h3><p>Rueda de las emociones, registro emocional, las 3 claves del estado y termómetro semanal.</p><a class="dl" href="recursos/05-manejo-de-emociones.pdf" target="_blank" rel="noopener">Descargar PDF ↓</a></div></article>
+    </div>
   </div>
 </section>
 
@@ -202,7 +288,7 @@ body{padding-bottom:84px}
   </div>
 </section>
 
-<section class="band">
+<section class="band" id="faq">
   <div class="wrap">
     <h2>Preguntas frecuentes</h2>
     <details><summary>¿Cuánto tiempo necesito por día?</summary><p>Unos 15 minutos. Si un día no puedes, retomas al siguiente; el plan no se pierde.</p></details>
@@ -224,46 +310,59 @@ body{padding-bottom:84px}
 
 <script>
 (function(){
-  const areas=[
-    ["Salud y cuerpo",5],["Descanso",4],["Emociones",5],["Pareja",6],
-    ["Familia y amistades",7],["Trabajo y dinero",6],["Tiempo para mí",3],["Propósito",4]
-  ];
-  const tips={
-    "Salud y cuerpo":"Empieza por la semana 2: las cartas Cuerpo · Emoción · Acción.",
-    "Descanso":"Empieza por la semana 1: las prácticas de pausa antes de dormir.",
-    "Emociones":"Empieza por las 21 prácticas de calma: elige la de tu estado de hoy.",
-    "Pareja":"Empieza por la guía Límites sin culpa, capítulo de pareja.",
-    "Familia y amistades":"Empieza por la semana 3: dónde se te va la energía.",
-    "Trabajo y dinero":"Empieza por la guía Límites sin culpa, capítulo de trabajo.",
-    "Tiempo para mí":"Empieza por el día 1 del cuaderno: 15 minutos que son solo tuyos.",
-    "Propósito":"Empieza por la semana 4 y vuelve a la Rueda al terminar."
-  };
-  const box=document.getElementById('sliders'), svg=document.getElementById('chart'), res=document.getElementById('result');
-  areas.forEach((a,i)=>{
-    const d=document.createElement('div'); d.className='sl';
-    d.innerHTML=`<label for="a${i}"><span>${a[0]}</span><output id="o${i}">${a[1]}</output></label><input type="range" id="a${i}" min="1" max="10" value="${a[1]}">`;
-    box.appendChild(d);
-    d.querySelector('input').addEventListener('input',e=>{a[1]=+e.target.value;document.getElementById('o'+i).textContent=a[1];draw();});
+  const AREAS=["Salud y energía","Pareja","Familia y amistades","Trabajo y carrera","Dinero","Crecimiento personal","Diversión y ocio","Propósito y espiritualidad"];
+  const SHORT=["Salud","Pareja","Familia","Trabajo","Dinero","Crecimiento","Diversión","Propósito"];
+  const TIPS={"Salud y energía":"Empieza por la semana 2 del programa: las cartas Cuerpo · Emoción · Acción.","Pareja":"Empieza por la guía Límites sin culpa, capítulo de pareja.","Familia y amistades":"Empieza por la semana 3: dónde se te va la energía.","Trabajo y carrera":"Usa la herramienta Manejo del Tiempo: empieza por la matriz de Eisenhower.","Dinero":"Usa el Calendario de Manifestación: define un resultado RPM para tus finanzas.","Crecimiento personal":"Usa el Registro de Hábitos: elige un hábito de 2 minutos para esta semana.","Diversión y ocio":"Agenda un bloque solo para ti en tu semana por bloques.","Propósito y espiritualidad":"Usa el Calendario de Manifestación: escribe tu visión a 1 año."};
+  const KEY="rv-borrador";
+  const state={hoy:AREAS.map(()=>5),quiero:AREAS.map(()=>8)};
+  try{const d=JSON.parse(localStorage.getItem(KEY)||"null");if(d&&d.hoy&&d.quiero){state.hoy=d.hoy;state.quiero=d.quiero;}}catch(e){}
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}};
+  const box=document.getElementById("rv-areas");
+  AREAS.forEach((a,i)=>{
+    const r=document.createElement("div");r.className="arow";
+    r.innerHTML=`<div class="an">${a}</div>
+      <div class="rg"><span><label for="h${i}">Hoy</label><output id="oh${i}">${state.hoy[i]}</output></span><input type="range" id="h${i}" min="1" max="10" value="${state.hoy[i]}"></div>
+      <div class="rg want"><span><label for="q${i}">Quiero llegar a</label><output id="oq${i}">${state.quiero[i]}</output></span><input type="range" id="q${i}" min="1" max="10" value="${state.quiero[i]}"></div>`;
+    box.appendChild(r);
+    r.querySelector("#h"+i).addEventListener("input",e=>{state.hoy[i]=+e.target.value;document.getElementById("oh"+i).textContent=state.hoy[i];save();if(!out.hidden)render();});
+    r.querySelector("#q"+i).addEventListener("input",e=>{state.quiero[i]=+e.target.value;document.getElementById("oq"+i).textContent=state.quiero[i];save();if(!out.hidden)render();});
   });
-  const R=110,N=areas.length;
-  const pt=(i,r)=>{const t=-Math.PI/2+i*2*Math.PI/N;return [Math.cos(t)*r,Math.sin(t)*r];};
-  function draw(){
-    let s='';
-    [2,4,6,8,10].forEach(v=>{s+=`<polygon points="${areas.map((_,i)=>pt(i,R*v/10).join(',')).join(' ')}" fill="none" stroke="var(--line)" stroke-width="1"/>`;});
-    areas.forEach((a,i)=>{const [x,y]=pt(i,R);s+=`<line x1="0" y1="0" x2="${x}" y2="${y}" stroke="var(--line)"/>`;
-      const [lx,ly]=pt(i,R+22);const anchor=Math.abs(lx)<8?'middle':(lx>0?'start':'end');
-      s+=`<text x="${lx}" y="${ly+4}" text-anchor="${anchor}">${a[0].split(' ')[0]}</text>`;});
-    s+=`<polygon points="${areas.map((a,i)=>pt(i,R*a[1]/10).join(',')).join(' ')}" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)" stroke-width="2"/>`;
-    const min=Math.min(...areas.map(a=>a[1]));
-    areas.forEach((a,i)=>{const [x,y]=pt(i,R*a[1]/10);s+=`<circle cx="${x}" cy="${y}" r="${a[1]===min?6:3.5}" fill="${a[1]===min?'var(--sun)':'var(--accent)'}"/>`;});
+  const form=document.getElementById("rueda"),out=document.getElementById("rv-out"),svg=document.getElementById("rv-chart");
+  const R=110,N=AREAS.length,pt=(i,r)=>{const t=-Math.PI/2+i*2*Math.PI/N;return[Math.cos(t)*r,Math.sin(t)*r];};
+  let last=null;
+  function render(){
+    let s="";
+    [2,4,6,8,10].forEach(v=>{s+=`<polygon points="${AREAS.map((_,i)=>pt(i,R*v/10).join(",")).join(" ")}" fill="none" stroke="var(--line)" stroke-width="1"/>`;});
+    AREAS.forEach((a,i)=>{const[x,y]=pt(i,R);s+=`<line x1="0" y1="0" x2="${x}" y2="${y}" stroke="var(--line)"/>`;
+      const[lx,ly]=pt(i,R+20);const anc=Math.abs(lx)<8?"middle":(lx>0?"start":"end");s+=`<text x="${lx}" y="${ly+4}" text-anchor="${anc}" font-size="11">${SHORT[i]}</text>`;});
+    s+=`<polygon points="${state.quiero.map((v,i)=>pt(i,R*v/10).join(",")).join(" ")}" fill="none" stroke="var(--sun)" stroke-width="2.5" stroke-dasharray="6 4"/>`;
+    s+=`<polygon points="${state.hoy.map((v,i)=>pt(i,R*v/10).join(",")).join(" ")}" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)" stroke-width="2.5"/>`;
+    state.hoy.forEach((v,i)=>{const[x,y]=pt(i,R*v/10);s+=`<circle cx="${x}" cy="${y}" r="3.5" fill="var(--accent)"/>`;});
     svg.innerHTML=s;
-    const low=areas.filter(a=>a[1]===min).map(a=>a[0]);
-    const avg=(areas.reduce((t,a)=>t+a[1],0)/N).toFixed(1);
-    res.innerHTML=`<p><b>Tu promedio: ${avg} / 10.</b> El área donde más te desconectaste es <b>${low.join(' y ')}</b> (${min}/10).</p><p class="muted" style="margin-top:6px">${tips[low[0]]}</p><p style="margin-top:12px"><a class="btn" href="#oferta" style="padding:12px 20px;font-size:.95rem">Ver el plan completo</a></p>`;
+    const avg=state.hoy.reduce((a,b)=>a+b,0)/N;
+    const gaps=AREAS.map((a,i)=>({a,hoy:state.hoy[i],q:state.quiero[i],g:state.quiero[i]-state.hoy[i]})).sort((x,y)=>y.g-x.g||x.hoy-y.hoy);
+    const top=gaps.slice(0,3);
+    const name=document.getElementById("rv-nombre").value.trim();
+    document.getElementById("rv-title").textContent=name?`${name}, esta es tu rueda`:"Esta es tu rueda";
+    document.getElementById("rv-summary").innerHTML=`Tu promedio de hoy es <b>${avg.toFixed(1)} / 10</b>. El área con más camino por recorrer es <b>${top[0].a}</b>: hoy estás en ${top[0].hoy} y quieres llegar a ${top[0].q}.`;
+    document.getElementById("rv-gaps").innerHTML=top.map(t=>`<li><span>${t.a}</span><span>${t.hoy} → ${t.q} · <b>${t.g>0?"+"+t.g:t.g}</b></span></li>`).join("");
+    document.getElementById("rv-tip").textContent=top[0].g>0?TIPS[top[0].a]:"Tus puntuaciones de hoy ya alcanzan lo que buscas: elige un área para sostener y celebra tu avance.";
+    document.getElementById("rv-accion-label").textContent=`Mi primera acción para «${top[0].a}» esta semana`;
+    last={name,avg,top};
   }
-  draw();
-  const bump=document.getElementById('bump'), buy=document.getElementById('buy'), note=document.getElementById('buyNote');
-  bump.addEventListener('change',()=>{buy.textContent=bump.checked?'Quiero mi kit + audios · US$24':'Quiero mi kit · US$17';});
-  buy.addEventListener('click',()=>{note.textContent='Vista previa: aquí se abriría el checkout'+(bump.checked?' con el kit y los audios (US$24).':' con el kit (US$17).');});
+  form.addEventListener("submit",e=>{e.preventDefault();out.hidden=false;render();out.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});});
+  document.getElementById("rv-reset").addEventListener("click",()=>{AREAS.forEach((_,i)=>{state.hoy[i]=5;state.quiero[i]=8;document.getElementById("h"+i).value=5;document.getElementById("q"+i).value=8;document.getElementById("oh"+i).textContent=5;document.getElementById("oq"+i).textContent=8;});save();out.hidden=true;msg.textContent="";});
+  const msg=document.getElementById("rv-msg");
+  const text=()=>{const acc=document.getElementById("rv-accion").value.trim();return `Mi Rueda de la Vida${last&&last.name?" · "+last.name:""}\n`+AREAS.map((a,i)=>`${a}: hoy ${state.hoy[i]} → quiero ${state.quiero[i]}`).join("\n")+`\nPromedio: ${last?last.avg.toFixed(1):""}/10`+(acc?`\nMi primera acción: ${acc}`:"")+`\nreconectacontuvida.com`;};
+  document.getElementById("rv-copy").addEventListener("click",()=>{const t=text();
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>{msg.textContent="Copiado. Pégalo en tus notas o en tu cuaderno.";},()=>{msg.textContent="No se pudo copiar automáticamente. Selecciona el texto de tus resultados y cópialo.";});}
+    else msg.textContent="No se pudo copiar automáticamente. Selecciona el texto de tus resultados y cópialo.";});
+  document.getElementById("rv-send").addEventListener("click",()=>{const em=document.getElementById("rv-email");
+    if(!em.value||!em.checkValidity()){msg.textContent="Escribe un email válido, por ejemplo nombre@gmail.com.";em.focus();return;}
+    msg.textContent="Vista previa: en el sitio publicado, aquí se enviaría tu resultado y el kit de 5 herramientas a "+em.value+".";});
+
+  const bump=document.getElementById("bump"),buy=document.getElementById("buy"),note=document.getElementById("buyNote");
+  bump.addEventListener("change",()=>{buy.textContent=bump.checked?"Quiero mi kit + audios · US$24":"Quiero mi kit · US$17";});
+  buy.addEventListener("click",()=>{note.textContent="Vista previa: aquí se abriría el checkout"+(bump.checked?" con el kit y los audios (US$24).":" con el kit (US$17).");});
 })();
 </script>
