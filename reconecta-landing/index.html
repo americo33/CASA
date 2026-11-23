@@ -1,0 +1,269 @@
+<title>Reconecta con tu Vida</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: una sola columna de lectura (~680px) con bandas a todo el ancho; la Rueda de tu Vida es el momento interactivo central. */
+:root{
+  --bg:#EEF2EE; --surface:#FFFFFF; --ink:#1C2A28; --muted:#55645F;
+  --accent:#1E5C55; --accent-ink:#FFFFFF; --sun:#E3A23B; --line:#D3DDD8; --band:#DDE8E3;
+  --warn-bg:#FFF4DF; --warn-ink:#6B4A10;
+  --display:"Young Serif", Georgia, "Times New Roman", serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121A19; --surface:#1A2523; --ink:#E6EEEB; --muted:#A3B3AE; --accent:#6FC2B5; --accent-ink:#0E1716;
+  --sun:#F0B95A; --line:#2C3B38; --band:#172220; --warn-bg:#2E2614; --warn-ink:#F2D49A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121A19; --surface:#1A2523; --ink:#E6EEEB; --muted:#A3B3AE; --accent:#6FC2B5; --accent-ink:#0E1716;
+  --sun:#F0B95A; --line:#2C3B38; --band:#172220; --warn-bg:#2E2614; --warn-ink:#F2D49A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:56px}
+.band{background:var(--band)}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.3rem)}
+h2{font-size:clamp(1.6rem,4.2vw,2.2rem);margin-bottom:18px}
+h3{font-size:1.2rem}
+p{margin:0}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.muted{color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:14px}
+
+.preview{background:var(--warn-bg);color:var(--warn-ink);font-size:.85rem;text-align:center;padding-block:8px}
+.preview .wrap{display:block}
+
+.hero{padding-block:48px 40px}
+.hero .lead{font-size:1.15rem;color:var(--muted);max-width:34em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:var(--accent-ink);
+  font-weight:700;font-size:1.05rem;padding:16px 26px;border-radius:999px;border:0;text-decoration:none;cursor:pointer;font-family:var(--body)}
+.btn:hover{filter:brightness(1.08)}
+.btn:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.price-line{font-size:.95rem;color:var(--muted)}
+.price-line s{opacity:.8}
+.price-line b{color:var(--ink)}
+.trust{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.9rem;color:var(--muted)}
+.trust span::before{content:"✓ ";color:var(--accent);font-weight:700}
+
+.pains{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.pains li{padding:12px 16px;border-left:3px solid var(--sun);background:var(--surface);border-radius:0 8px 8px 0}
+
+/* Rueda */
+.wheel{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.wheel > *{min-width:0}
+.sliders{display:flex;flex-direction:column;gap:10px}
+.sl label{display:flex;justify-content:space-between;font-size:.92rem;font-weight:600}
+.sl output{font-variant-numeric:tabular-nums;color:var(--accent)}
+.sl input{width:100%;accent-color:var(--accent)}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:22px}
+svg text{fill:var(--muted);font-family:var(--body);font-size:11px}
+@media (max-width:640px){.wheel{grid-template-columns:1fr}}
+
+.items{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.item > div{min-width:0}
+.item .val{font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.item p{color:var(--muted);font-size:.95rem}
+.item.total{font-weight:700}
+.item.total .val{color:var(--ink)}
+
+.weeks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.week{background:var(--surface);border-radius:12px;padding:18px;border:1px solid var(--line)}
+.week .n{font-family:var(--display);font-size:2rem;color:var(--sun);line-height:1}
+.week p{color:var(--muted);font-size:.95rem;margin-top:6px}
+@media (max-width:560px){.weeks{grid-template-columns:1fr}}
+
+.offer{background:var(--surface);border:2px solid var(--accent);border-radius:18px;padding:28px;text-align:center}
+.offer .big{font-family:var(--display);font-size:3.4rem;line-height:1;color:var(--accent)}
+.bump{display:flex;gap:12px;align-items:flex-start;text-align:left;border:1.5px dashed var(--sun);border-radius:12px;padding:14px;margin-block:18px}
+.bump input{margin-top:5px;width:20px;height:20px;accent-color:var(--accent);flex:none}
+
+.testis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.testi{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:16px;font-size:.95rem}
+.testi .who{margin-top:10px;font-size:.85rem;color:var(--muted)}
+@media (max-width:640px){.testis{grid-template-columns:1fr}}
+
+details{border-bottom:1px solid var(--line);padding-block:14px}
+summary{cursor:pointer;font-weight:600}
+details p{margin-top:8px;color:var(--muted)}
+
+footer{padding-block:36px;font-size:.85rem;color:var(--muted)}
+
+.sticky{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+  padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;justify-content:space-between;align-items:center;gap:12px;z-index:5}
+.sticky .btn{padding:12px 20px;font-size:.95rem}
+.sticky small{color:var(--muted)}
+body{padding-bottom:84px}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .2s}}
+</style>
+
+<div class="preview"><div class="wrap">Vista previa de la landing para <b>www.reconectacontuvida.com</b> · no publicada · los testimonios son de ejemplo</div></div>
+
+<header class="hero">
+  <div class="wrap stack" style="gap:20px">
+    <span class="eyebrow">Programa guiado de 30 días</span>
+    <h1>Vuelve a sentir que tu vida es tuya.</h1>
+    <p class="lead">Para mujeres que cuidan de todos y se dejaron para el final. 15 minutos al día, un cuaderno, 60 cartas y un plan semana a semana para bajar el ruido mental, escuchar a tu cuerpo y poner límites sin culpa.</p>
+    <div><a class="btn" href="#oferta">Quiero reconectar · US$17</a></div>
+    <p class="price-line">Valor del kit <s>US$127</s> · hoy <b>US$17</b>, pago único, acceso inmediato</p>
+    <div class="trust"><span>Descarga digital al instante</span><span>Garantía de 7 días</span><span>Sin suscripción</span></div>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">¿Te reconoces?</span>
+    <h2>Un día te das cuenta de que vives en piloto automático</h2>
+    <ul class="pains">
+      <li>Le das vueltas a todo antes de dormir y te levantas más cansada de lo que te acostaste.</li>
+      <li>Dices que sí cuando quieres decir que no, y después te enojas contigo.</li>
+      <li>Tu cuerpo te avisa (la espalda, el estómago, la mandíbula apretada) y no tienes tiempo de escucharlo.</li>
+      <li>Ya no sabes bien qué te gusta, qué quieres ni hacia dónde vas.</li>
+      <li>Probaste libros y videos sueltos, pero nada te acompañó día a día.</li>
+    </ul>
+    <p style="margin-top:18px">No te falta fuerza de voluntad. Te falta un rato al día que sea solo tuyo y una guía que te diga qué hacer en ese rato.</p>
+  </div>
+</section>
+
+<section id="rueda">
+  <div class="wrap">
+    <span class="eyebrow">Test gratuito · 1 minuto</span>
+    <h2>La Rueda de tu Vida</h2>
+    <p class="muted" style="margin-bottom:22px">Puntúa de 1 a 10 qué tan satisfecha te sientes hoy en cada área. La rueda te muestra dónde te desconectaste primero.</p>
+    <div class="wheel">
+      <div class="sliders" id="sliders"></div>
+      <svg id="chart" viewBox="-150 -150 300 300" role="img" aria-label="Rueda de la vida con tus puntuaciones" style="width:100%;max-width:340px;margin:0 auto;display:block"></svg>
+    </div>
+    <div class="result" id="result" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="band" id="incluye">
+  <div class="wrap">
+    <span class="eyebrow">El Kit Reconecta</span>
+    <h2>Todo lo que recibes hoy</h2>
+    <div class="items">
+      <div class="item"><div><h3>Cuaderno guiado de 30 días</h3><p>Una sesión de 15 minutos por día: una pregunta, un ejercicio y una acción pequeña. Imprimible o para completar en el celular.</p></div><span class="val">US$37</span></div>
+      <div class="item"><div><h3>60 Cartas Cuerpo · Emoción · Acción</h3><p>Sacas una carta cuando te sientes desbordada: qué puede estar diciéndote tu cuerpo y una práctica concreta para ese momento.</p></div><span class="val">US$27</span></div>
+      <div class="item"><div><h3>21 prácticas de calma para tu sistema nervioso</h3><p>Respiraciones, movimientos suaves y anclajes de 3 a 5 minutos, ilustrados paso a paso, ordenados según cómo te sientes.</p></div><span class="val">US$27</span></div>
+      <div class="item"><div><h3>Guía «Límites sin culpa»</h3><p>Frases listas para decir que no en el trabajo, en la familia y en la pareja, con el ejercicio para sostenerlas.</p></div><span class="val">US$17</span></div>
+      <div class="item"><div><h3>Bono · Diario de calma de 90 días</h3><p>Una idea breve de los estoicos y una pregunta de reflexión por día para seguir después del programa.</p></div><span class="val">US$19</span></div>
+      <div class="item total"><div>Valor total</div><span class="val"><s>US$127</s></span></div>
+      <div class="item total"><div>Tu precio hoy</div><span class="val" style="color:var(--accent)">US$17</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Cómo funciona</span>
+    <h2>Cuatro semanas, una dirección</h2>
+    <div class="weeks">
+      <div class="week"><div class="n">1</div><h3>Pausa</h3><p>Bajas el volumen mental. Aprendes a cortar el ciclo de pensamientos repetitivos y a dormir con la cabeza más liviana.</p></div>
+      <div class="week"><div class="n">2</div><h3>Cuerpo</h3><p>Vuelves a escuchar las señales de tu cuerpo con las cartas y las prácticas de calma.</p></div>
+      <div class="week"><div class="n">3</div><h3>Límites</h3><p>Identificas dónde se te va la energía y practicas decir que no sin pedir perdón.</p></div>
+      <div class="week"><div class="n">4</div><h3>Propósito</h3><p>Vuelves a la Rueda, eliges tu área prioritaria y armas tu plan de los próximos 90 días.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">Lo que dicen</span>
+    <h2>Mujeres que ya hicieron el recorrido</h2>
+    <div class="testis">
+      <div class="testi">«Ejemplo de testimonio: aquí va lo que cambió en la primera semana.»<div class="who">Nombre, edad, ciudad · reemplazar por testimonio real</div></div>
+      <div class="testi">«Ejemplo de testimonio: aquí va qué le sirvió más del kit.»<div class="who">Nombre, edad, ciudad · reemplazar por testimonio real</div></div>
+      <div class="testi">«Ejemplo de testimonio: aquí va cómo se siente al terminar los 30 días.»<div class="who">Nombre, edad, ciudad · reemplazar por testimonio real</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="oferta">
+  <div class="wrap">
+    <div class="offer stack" style="gap:12px">
+      <span class="eyebrow">Acceso inmediato</span>
+      <h2 style="margin:0">Kit Reconecta completo</h2>
+      <p class="muted"><s>US$127</s></p>
+      <div class="big">US$17</div>
+      <p class="muted">Pago único · descarga en tu email en minutos</p>
+      <label class="bump" for="bump">
+        <input type="checkbox" id="bump">
+        <span><b>Sí, agrégame los 12 audios de calma guiados por +US$7.</b><br><span class="muted">Para escuchar con auriculares cuando no puedes leer: antes de dormir, en el auto, en una pausa del trabajo.</span></span>
+      </label>
+      <div><button class="btn" id="buy" type="button">Quiero mi kit · US$17</button></div>
+      <p class="muted" id="buyNote" style="font-size:.9rem">Botón de vista previa: en la versión publicada lleva al checkout.</p>
+      <p style="font-size:.95rem"><b>Garantía de 7 días.</b> Si lo abres y sientes que no es para ti, escribes y te devolvemos el 100%.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Cuánto tiempo necesito por día?</summary><p>Unos 15 minutos. Si un día no puedes, retomas al siguiente; el plan no se pierde.</p></details>
+    <details><summary>¿Cómo lo recibo?</summary><p>Apenas se confirma el pago te llega un email con los PDF y el acceso. Puedes usarlos en el celular o imprimirlos.</p></details>
+    <details><summary>¿Es una terapia?</summary><p>No. Es un programa de autocuidado y desarrollo personal. Si estás atravesando un momento difícil o tienes un diagnóstico, te sirve como complemento y no reemplaza la atención de un profesional de salud.</p></details>
+    <details><summary>¿Es una suscripción?</summary><p>No. Pagas una sola vez y el material queda para ti.</p></details>
+    <details><summary>¿Sirve si nunca hice nada de esto?</summary><p>Sí. Está pensado para empezar desde cero, con instrucciones simples en cada página.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap stack" style="gap:8px">
+    <p><b>Reconecta con tu Vida</b> · reconectacontuvida.com</p>
+    <p>Este programa ofrece herramientas de bienestar y desarrollo personal. No ofrece diagnóstico ni tratamiento médico o psicológico y no reemplaza la consulta con un profesional. Los resultados varían según cada persona.</p>
+  </div>
+</footer>
+
+<div class="sticky"><small>Kit Reconecta · <b>US$17</b></small><a class="btn" href="#oferta">Empezar hoy</a></div>
+
+<script>
+(function(){
+  const areas=[
+    ["Salud y cuerpo",5],["Descanso",4],["Emociones",5],["Pareja",6],
+    ["Familia y amistades",7],["Trabajo y dinero",6],["Tiempo para mí",3],["Propósito",4]
+  ];
+  const tips={
+    "Salud y cuerpo":"Empieza por la semana 2: las cartas Cuerpo · Emoción · Acción.",
+    "Descanso":"Empieza por la semana 1: las prácticas de pausa antes de dormir.",
+    "Emociones":"Empieza por las 21 prácticas de calma: elige la de tu estado de hoy.",
+    "Pareja":"Empieza por la guía Límites sin culpa, capítulo de pareja.",
+    "Familia y amistades":"Empieza por la semana 3: dónde se te va la energía.",
+    "Trabajo y dinero":"Empieza por la guía Límites sin culpa, capítulo de trabajo.",
+    "Tiempo para mí":"Empieza por el día 1 del cuaderno: 15 minutos que son solo tuyos.",
+    "Propósito":"Empieza por la semana 4 y vuelve a la Rueda al terminar."
+  };
+  const box=document.getElementById('sliders'), svg=document.getElementById('chart'), res=document.getElementById('result');
+  areas.forEach((a,i)=>{
+    const d=document.createElement('div'); d.className='sl';
+    d.innerHTML=`<label for="a${i}"><span>${a[0]}</span><output id="o${i}">${a[1]}</output></label><input type="range" id="a${i}" min="1" max="10" value="${a[1]}">`;
+    box.appendChild(d);
+    d.querySelector('input').addEventListener('input',e=>{a[1]=+e.target.value;document.getElementById('o'+i).textContent=a[1];draw();});
+  });
+  const R=110,N=areas.length;
+  const pt=(i,r)=>{const t=-Math.PI/2+i*2*Math.PI/N;return [Math.cos(t)*r,Math.sin(t)*r];};
+  function draw(){
+    let s='';
+    [2,4,6,8,10].forEach(v=>{s+=`<polygon points="${areas.map((_,i)=>pt(i,R*v/10).join(',')).join(' ')}" fill="none" stroke="var(--line)" stroke-width="1"/>`;});
+    areas.forEach((a,i)=>{const [x,y]=pt(i,R);s+=`<line x1="0" y1="0" x2="${x}" y2="${y}" stroke="var(--line)"/>`;
+      const [lx,ly]=pt(i,R+22);const anchor=Math.abs(lx)<8?'middle':(lx>0?'start':'end');
+      s+=`<text x="${lx}" y="${ly+4}" text-anchor="${anchor}">${a[0].split(' ')[0]}</text>`;});
+    s+=`<polygon points="${areas.map((a,i)=>pt(i,R*a[1]/10).join(',')).join(' ')}" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)" stroke-width="2"/>`;
+    const min=Math.min(...areas.map(a=>a[1]));
+    areas.forEach((a,i)=>{const [x,y]=pt(i,R*a[1]/10);s+=`<circle cx="${x}" cy="${y}" r="${a[1]===min?6:3.5}" fill="${a[1]===min?'var(--sun)':'var(--accent)'}"/>`;});
+    svg.innerHTML=s;
+    const low=areas.filter(a=>a[1]===min).map(a=>a[0]);
+    const avg=(areas.reduce((t,a)=>t+a[1],0)/N).toFixed(1);
+    res.innerHTML=`<p><b>Tu promedio: ${avg} / 10.</b> El área donde más te desconectaste es <b>${low.join(' y ')}</b> (${min}/10).</p><p class="muted" style="margin-top:6px">${tips[low[0]]}</p><p style="margin-top:12px"><a class="btn" href="#oferta" style="padding:12px 20px;font-size:.95rem">Ver el plan completo</a></p>`;
+  }
+  draw();
+  const bump=document.getElementById('bump'), buy=document.getElementById('buy'), note=document.getElementById('buyNote');
+  bump.addEventListener('change',()=>{buy.textContent=bump.checked?'Quiero mi kit + audios · US$24':'Quiero mi kit · US$17';});
+  buy.addEventListener('click',()=>{note.textContent='Vista previa: aquí se abriría el checkout'+(bump.checked?' con el kit y los audios (US$24).':' con el kit (US$17).');});
+})();
+</script>
